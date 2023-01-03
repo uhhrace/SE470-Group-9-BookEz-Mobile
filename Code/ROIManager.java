@@ -14,7 +14,6 @@ public class ROIManager{
     public static File output;//output.text file collects all information from PDFs
     public static Vector<String> v = new Vector<String>();//stores all information collected from the PDFs
     public static Vector<String> pathList = new Vector<String>();//stores all the paths from each PDF uploaded
-    //public static Vector<Double> totals = new Vector<Double>(5);
     private Integer nextEnd;//used to find desired strings 
     static Integer identifyer = 1;//for vectors id number 
     static Double totalTotal = 0.00, totalShipCost = 0.00, totalSoldPrice = 0.00, totalShipPaid = 0.00, totalTax = 0.00, totalProfit = 0.00;//for total collection
@@ -33,36 +32,15 @@ public class ROIManager{
 
         if(response == JFileChooser.APPROVE_OPTION){//make sure file selecteds path is retrieved
 
-            //try{
-                File files[] = fileUpload.getSelectedFiles();//array of files that contains selected files  
+            File files[] = fileUpload.getSelectedFiles();//array of files that contains selected files  
 
-                for(File file : files){//itterate through collected files 
+            for(File file : files){//itterate through collected files 
 
-                    /*//getting path name and convering into a displayable method for user 
-                    String path = file.getAbsolutePath() + "\n";//collect path 
-                    path = identifyer + ": " + convertAndFind(path, "Ebay Orders/", 0, 12) + "\n";//collecting file name selected by user
-                    pathList.add(path);
-                    //photoPanel.fileList.append(path);//displaying what file(s) were uploaded
-                    
-                    FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
-                    PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
-                    PDFTextStripper pdfTextStripper = new PDFTextStripper();//obtain text
-                    String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
+                readInSingleFile(file);
+            }
 
-                    outputWriter("ID: " + identifyer + "\n" + docText, true);//getting info from each pdf and adding to output.text file
-                    totalCollection(docText, true);
-
-                    pdfDocument.close();//closing document
-                    fis.close();//closing file input stream
-                    identifyer++;*/
-                    readInSingleFile(file);
-                }
-
-                addTotalsToTable();
-                
-            //} catch(java.io.IOException ex){//catching exception thrown for invalid document inputs
-             //   System.out.println("File cannot be opened: " + ex);//printing error message 
-            //} 
+            addTotalsToTable();
+           
         }
 
     }//end of readInFiles
@@ -73,7 +51,6 @@ public class ROIManager{
             String path = file.getAbsolutePath() + "\n";//collect path 
             path = identifyer + ": " + convertAndFind(path, "Ebay Orders/", 0, 12) + "\n";//collecting file name selected by user
             pathList.add(path);
-            //photoPanel.fileList.append(path);//displaying what file(s) were uploaded
             
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
             PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 

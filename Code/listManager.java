@@ -11,10 +11,10 @@ import javax.swing.JOptionPane;
 
 public class listManager {
     public static File outputList;
-    private int index;
+    private static int index;
 
     //itterates through ROIManager.v vector containing all the order info, once the key is found it is deleted and all information is updated
-    private void searchAndRemove (String element){
+    public static void searchAndRemove (String element){
 
         Collections.sort(ROIManager.v);//sorting vector before search
 
@@ -53,7 +53,7 @@ public class listManager {
     }//end of searchAndRemove function
 
     //updates entire ROI table when called 
-    private void updateROI(Vector<String> v){
+    private static void updateROI(Vector<String> v){
         try{
             //utilizing an instance of ROIManager to update each segment 
             Class<?> c = ROIManager.class;
@@ -83,7 +83,7 @@ public class listManager {
     }//end of update
 
     //will update the pathlist text file and display on screen when called
-    private void updatePathList(){
+    private static void updatePathList(){
         outputList = new File("pathList.txt");//getting text file
 
         try{
@@ -121,7 +121,7 @@ class StringComparator implements Comparator<String>{
     @Override
     public int compare(String s1, String s2){//function preformes the comparisons
         int id1 = extractID(s1);//obtains id from vector value 
-        int id2 = Integer.parseInt(s2);//convets id to be found into comparable int value 
+        int id2 = Integer.parseInt(s2);//converts id to be found into comparable int value 
 
         return Integer.compare(id1, id2);//compares values 
     }

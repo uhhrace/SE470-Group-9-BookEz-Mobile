@@ -12,8 +12,6 @@ public class photoPanel extends JPanel implements ActionListener{
 
     public photoPanel(){
 
-        //Color ezBlue= new Color(80, 145, 230);
-
         //creating JPanels  
         JPanel main = new JPanel();
         JPanel space = new JPanel();
@@ -158,17 +156,8 @@ public class photoPanel extends JPanel implements ActionListener{
 
                 int fieldInt = Integer.parseInt(fieldResponse);//converting the entered response into an integer
                 if(fieldInt >= 1 && fieldInt < ROIManager.identifyer){//not within scope of added files
-                    try{
-                        Class<?> c = listManager.class;
-                        Object o = c.getDeclaredConstructor().newInstance();
         
-                        Method m = listManager.class.getDeclaredMethod("searchAndRemove", String.class);
-                        m.setAccessible(true);
-                        m.invoke(o, fieldResponse);
-        
-                    }catch(Exception ex){//catching exception thrown for invalid document inputs
-                        System.out.println("Exception thrown: " + ex);//printing error message 
-                    } 
+                    listManager.searchAndRemove(fieldResponse);
                 } else {//number is within the scope
                     JOptionPane.showMessageDialog(null, "Please enter a valid number");
                 }
