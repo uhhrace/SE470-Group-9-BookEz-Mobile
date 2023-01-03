@@ -14,12 +14,12 @@ public class ROIManager{
     public static File output;//output.text file collects all information from PDFs
     public static Vector<String> v = new Vector<String>();//stores all information collected from the PDFs
     public static Vector<String> pathList = new Vector<String>();//stores all the paths from each PDF uploaded
-    private Integer nextEnd;//used to find desired strings 
+    private static Integer nextEnd;//used to find desired strings 
     static Integer identifyer = 1;//for vectors id number 
     static Double totalTotal = 0.00, totalShipCost = 0.00, totalSoldPrice = 0.00, totalShipPaid = 0.00, totalTax = 0.00, totalProfit = 0.00;//for total collection
     
     //user selecting files from device 
-    private void readInFiles(){
+    public static void readInFiles(){
 
         JFileChooser fileUpload = new JFileChooser();//creating file chooser//testing 
         fileUpload = new JFileChooser();//creating file chooser
@@ -45,7 +45,7 @@ public class ROIManager{
 
     }//end of readInFiles
 
-    private void readInSingleFile(File file){
+    private static void readInSingleFile(File file){
         try{
             //getting path name and convering into a displayable method for user 
             String path = file.getAbsolutePath() + "\n";//collect path 
@@ -73,7 +73,7 @@ public class ROIManager{
     ///////////////////////////////////////////////////////////////////////
 
     //wiriting in header for each column and file formatting 
-    protected void roiHeader(){
+    protected static void roiHeader(){
         output = new File("output.txt");//creating output.text file 
 
         try{
@@ -93,7 +93,7 @@ public class ROIManager{
 
     //used to extract the desired information from an ebay order reciept pdf and add new info to output.text file
     //boolean used to determine wether the extracted information should be stored in the vector
-    protected void outputWriter(String s, boolean vector){
+    protected static void outputWriter(String s, boolean vector){
 
         //strings to collect information
         String id, orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC;
@@ -148,7 +148,7 @@ public class ROIManager{
     }//end of creating ROI table 
 
     //adds totals of each row to the end of the file
-    private void addTotalsToTable(){
+    private static void addTotalsToTable(){
         //try adding information to file
         try(FileWriter writer = new FileWriter("output.txt", true);
             BufferedWriter bw = new BufferedWriter(writer);
@@ -170,7 +170,7 @@ public class ROIManager{
 
     //collects all information from pdf texts and continous to sum up each entered string 
     //utilizes boolean to determine if the total is being added or subtracted from current totals
-    protected void totalCollection(String s, boolean add){
+    protected static void totalCollection(String s, boolean add){
 
         //strings to collect information
         String total, shipCost, soldPrice, shipPaid, tax, profitC;
@@ -214,7 +214,7 @@ public class ROIManager{
     //string s is used in all set functions as the holder of dollar amounts for said total
     //add is used to determine wether we are adding to the current totals or deleting 
     //if we are deleting from a total we have to use ROIManager.NAME in order to delet as it is dome from listManager
-    public void setFinalTotal(String s, boolean add){
+    public static void setFinalTotal(String s, boolean add){
         if(add){
             totalTotal = (double) Math.round((totalTotal + Double.parseDouble(s)) * 100) / 100;
         } else {
@@ -222,11 +222,11 @@ public class ROIManager{
         }
     }
 
-    public double getFinalTotal(){
+    public static double getFinalTotal(){
         return totalTotal;
     }
 
-    public void setTotalShipCost(String s, boolean add){
+    public static void setTotalShipCost(String s, boolean add){
         if(add){
             totalShipCost = (double) Math.round((totalShipCost + Double.parseDouble(s)) * 100) / 100;
         } else {
@@ -234,11 +234,11 @@ public class ROIManager{
         }
     }
 
-    public double getTotalShipCost(){
+    public static double getTotalShipCost(){
         return totalShipCost;
     }
 
-    public void setTotalSoldPrice(String s, boolean add){
+    public static void setTotalSoldPrice(String s, boolean add){
         if(add){
             totalSoldPrice = (double) Math.round((totalSoldPrice + Double.parseDouble(s)) * 100) / 100;
         } else {
@@ -246,11 +246,11 @@ public class ROIManager{
         }
     }
 
-    public double getTotalSoldPrice(){
+    public static double getTotalSoldPrice(){
         return totalSoldPrice;
     }
 
-    public void setTotalShipPaid(String s, boolean add){
+    public static void setTotalShipPaid(String s, boolean add){
         if(add){
             totalShipPaid = (double) Math.round((totalShipPaid + Double.parseDouble(s)) * 100) / 100;
         } else {
@@ -258,11 +258,11 @@ public class ROIManager{
         }
     }
 
-    public double getTotalShipPaid(){
+    public static double getTotalShipPaid(){
         return totalShipPaid;
     }
 
-    public void setTotalTax(String s, boolean add){
+    public static void setTotalTax(String s, boolean add){
         if(add){
             totalTax = (double) Math.round((totalTax + Double.parseDouble(s)) * 100) / 100;
         } else {
@@ -270,11 +270,11 @@ public class ROIManager{
         }
     }
 
-    public double getTotalTax(){
+    public static double getTotalTax(){
         return totalTax;
     }
 
-    public void setTotalProfit(String s, boolean add){
+    public static void setTotalProfit(String s, boolean add){
         if(add){
             totalProfit = (double) Math.round((totalProfit + Double.parseDouble(s)) * 100) / 100;
         } else {
@@ -282,7 +282,7 @@ public class ROIManager{
         }
     }
 
-    public double getTotalProfit(){
+    public static double getTotalProfit(){
         return totalProfit;
     } 
 
@@ -291,7 +291,7 @@ public class ROIManager{
     ///////////////////////////////////////////////////////////////////////
 
     //finds a string segment and runs till the end of the line
-    String convertAndFind(String docText, String id, int idInt, int mod){
+    static String convertAndFind(String docText, String id, int idInt, int mod){
 
         String result;//result to be returned 
         nextEnd = idInt;//setting to idInt 
@@ -306,7 +306,7 @@ public class ROIManager{
     }//end of convert and find 
 
     //calculates profit
-    String profitCalc(String total, String shipCost, String tax){
+    static String profitCalc(String total, String shipCost, String tax){
 
         double profit = 0.0;//used for calculations
         

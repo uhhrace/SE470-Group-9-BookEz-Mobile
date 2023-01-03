@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
-import java.lang.reflect.*;
 
 public class photoPanel extends JPanel implements ActionListener{
     
@@ -118,31 +117,18 @@ public class photoPanel extends JPanel implements ActionListener{
 
     //creates an instance of ROIManager to read in selected files from the users device
     private void uploadFiles(){
-        try{
-            Class<?> c = ROIManager.class;
-            Object o = c.getDeclaredConstructor().newInstance();
-            fileList.setText("");//clearing field for uploaded file list
 
-            Method m = ROIManager.class.getDeclaredMethod("readInFiles");
-            m.setAccessible(true);
-            m.invoke(o);
+        //read in all selected files 
+        ROIManager.readInFiles();
 
-            //displaying pathList to screen
-            Class<?> c2 = listManager.class;
-            Object o2 = c2.getDeclaredConstructor().newInstance();
+        //displaying pathList to screen
+        listManager.updatePathList();
 
-            Method m2 = listManager.class.getDeclaredMethod("updatePathList");
-            m2.setAccessible(true);
-            m2.invoke(o2);
+        //user can now choose to delete a file that was uploaded
+        delete.setEnabled(true);
+        deleteField.setEditable(true);
+        clearList.setEnabled(true);
 
-            //user can now choose to delete a file that was uploaded
-            delete.setEnabled(true);
-            deleteField.setEditable(true);
-            clearList.setEnabled(true);
-
-        }catch(Exception ex){//catching exception thrown for invalid document inputs
-            System.out.println("Exception thrown: " + ex);//printing error message 
-        } 
     }//end of uploadFiles
 
     //deletes a file based on user selection 

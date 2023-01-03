@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.FileReader;
-import java.lang.reflect.Method;
 import java.io.BufferedReader;
 import java.io.File;
 
@@ -82,22 +81,12 @@ public class roiPanel extends JPanel implements ActionListener{
 
                     if(e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
                         
-                        try{
-                            Class<?> c = SortManager.class;
-                            Object o = c.getDeclaredConstructor().newInstance();
-
-                            Method m = SortManager.class.getDeclaredMethod("profitSort", new Class[]{boolean.class});
-                            m.setAccessible(true);
-
-                            if(e.getSource() == highProfitSort){
-                                m.invoke(o, true);
-                            } else if(e.getSource() == lowProfitSort){
-                                m.invoke(o, false);
-                            }
-                            
-                        }catch(Exception ex){//catching exception thrown for invalid document inputs
-                            System.out.println("Exception thrown: " + ex);//printing error message 
-                        } 
+                        if(e.getSource() == highProfitSort){
+                            sortManager.profitSort(true);
+                        } else if(e.getSource() == lowProfitSort){
+                            sortManager.profitSort(false);
+                        }
+                     
                     } 
                     //default to display roi table
                     try{  

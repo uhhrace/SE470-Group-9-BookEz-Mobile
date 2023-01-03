@@ -83,7 +83,7 @@ public class listManager {
     }//end of update
 
     //will update the pathlist text file and display on screen when called
-    private static void updatePathList(){
+    static void updatePathList(){
         outputList = new File("pathList.txt");//getting text file
 
         try{

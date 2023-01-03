@@ -4,12 +4,12 @@ import java.io.File;
 
 import javax.swing.*;
 
-public class main extends JPanel implements ActionListener{
+public class homePanel extends JPanel implements ActionListener{
     
     private JButton photo, roi, exit;
     private JLabel appName, blank, option, tab;
 
-    public main(){
+    public homePanel(){
 
         //Creating Panels
         JPanel main = new JPanel();
@@ -97,7 +97,6 @@ public class main extends JPanel implements ActionListener{
             controller.getInstance().changeCard("View ROI Table");
         }
         else if(e.getSource() == exit){
-            //controller.getInstance().changeCard("Login");
 
             //deleting output.text files only if they were created 
             File out = new File("output.txt");

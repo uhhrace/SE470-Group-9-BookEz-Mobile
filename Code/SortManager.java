@@ -1,8 +1,7 @@
 import java.util.Vector;
 
-public class SortManager{
+public class sortManager{
     
-    private static ROIManager roi = new ROIManager();
     private static Integer next;
     
      //sorting by profit made 
@@ -12,11 +11,11 @@ public class SortManager{
         insertionSort(ROIManager.v, type);//sort based on type 
 
         try{
-            roi.roiHeader();//write file header 
+            ROIManager.roiHeader();//write file header 
 
             //write vectors elements into file as they were sorted 
             for(int i = 0; i < ROIManager.v.size(); i++){
-                roi.outputWriter(ROIManager.v.get(i), false);
+                ROIManager.outputWriter(ROIManager.v.get(i), false);
             }
 
         }catch(Exception ex){//catching exception thrown for invalid document inputs
@@ -43,7 +42,7 @@ public class SortManager{
             tax = convertAndFind(v.get(i), "$", next, 0);
 
             //calculating profit from vectors i position
-            profitC = roi.profitCalc(total, shipCost, tax);
+            profitC = ROIManager.profitCalc(total, shipCost, tax);
             key = Double.parseDouble(profitC.substring(1));//key starts at 1
 
             int j = i - 1;//create integer j that starts at 0
@@ -57,7 +56,7 @@ public class SortManager{
             tax = convertAndFind(v.get(j), "$", next, 0);
 
             //calculating profit from vectors i position
-            profitC = roi.profitCalc(total, shipCost, tax);
+            profitC = ROIManager.profitCalc(total, shipCost, tax);
             elem = Double.parseDouble(profitC.substring(1));//element starts at 0
 
             
