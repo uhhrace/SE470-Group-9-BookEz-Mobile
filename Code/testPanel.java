@@ -1,0 +1,290 @@
+import java.awt.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.event.*;
+import java.io.File;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.DataFlavor;
+import java.util.List;
+import javax.swing.JFileChooser;
+import java.lang.reflect.*;
+
+public class testPanel extends JPanel implements ActionListener{
+    
+    private JButton back, upload, delete, clearList;
+    private JLabel name,prompt, blank, listID, dropArea;
+    static JTextArea fileList, deleteField;
+    private JFileChooser fileChooser;
+
+    public testPanel(){
+
+        //Color ezBlue= new Color(80, 145, 230);
+
+        //creating JPanels  
+        JPanel main = new JPanel();
+        JPanel space = new JPanel();
+        JPanel space2 = new JPanel();
+        JPanel title = new JPanel();
+        JPanel promptPanel = new JPanel();
+        JPanel listIDPanel = new JPanel();
+        JPanel file = new JPanel();
+        JPanel dropBox = new JPanel();
+        JPanel deletePanel = new JPanel();
+        JPanel button = new JPanel();
+
+        //creating JButtons 
+        back = new JButton("<-");//create back button 
+        back.addActionListener(this);//monitor if clicked 
+        back.setForeground(colorPalette.ezBlue);
+ 
+        upload = new JButton("Select Files");
+        upload.addActionListener(this);
+        upload.setForeground(colorPalette.ezBlue);
+
+        delete = new JButton("Delete");
+        delete.addActionListener(this);
+        delete.setForeground(colorPalette.ezBlue);
+        delete.setEnabled(false);//ensures that files must be first uploaded
+
+        clearList = new JButton("Clear All");
+        clearList.addActionListener(this);
+        clearList.setForeground(colorPalette.ezBlue);
+        clearList.setEnabled(false);//ensures that files must be first uploaded
+ 
+        //creating JLabels
+        name = new JLabel("Upload Files");
+        name.setFont(new Font("Arial", Font.BOLD, 35));//resizing text within label
+        name.setForeground(Color.white);
+ 
+        blank = new JLabel("");
+
+        prompt = new JLabel("Ensure files are in a PDF format");
+        prompt.setFont(new Font("Arial", Font.PLAIN, 15));
+        prompt.setForeground(Color.white);
+
+        listID = new JLabel("List of files uploaded");
+        listID.setFont(new Font("Arial", Font.PLAIN, 15));
+        listID.setForeground(colorPalette.ezBlue);
+
+        dropArea = new JLabel("Drop PDF Files Here");
+        //dropArea.add(dropBox);
+        dropArea.setPreferredSize(new Dimension(200, 200));
+
+        //creating text area 
+        fileList = new JTextArea("         No Files Have Been Uploaded");
+        fileList.setPreferredSize(new Dimension(250, 200));
+        fileList.setEditable(false);
+
+        deleteField = new JTextArea();
+        deleteField.setPreferredSize(new Dimension(250, 20));
+        deleteField.setEditable(false);//ensures that files must first be uploaded
+
+        //creating JScrollPane 
+        JScrollPane pathScroll = new JScrollPane(fileList);
+        pathScroll.setBorder(null);
+
+        //creating JFileChooser 
+       // fileChooser = new JFileChooser();
+
+        //only accepts pdf files
+        //fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
+        
+        //adding drop target listener to file chooser 
+        dropArea.setDropTarget(new DropTarget(){
+            public synchronized void drop(DropTargetDropEvent dtde){
+                try{
+                    //accepts the dropped file and gets data
+                    dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                    Transferable transferable = dtde.getTransferable();
+
+                    @SuppressWarnings("unchecked")
+                    List<File> files = (List<File>)transferable.getTransferData(DataFlavor.javaFileListFlavor);
+
+                    //process the files 
+                    for(File file: files){
+                        if(file.getName().endsWith(".pdf")){
+                            Class<?> c = ROIManager.class;
+                            Object o = c.getDeclaredConstructor().newInstance();
+                            fileList.setText("");//clearing field for uploaded file list
+
+                            Method m = ROIManager.class.getDeclaredMethod("readInSingleFile", File.class);
+                            m.setAccessible(true);
+                            m.invoke(o, file);
+
+                            System.out.println("Success");
+                        }
+                    }
+
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        });
+ 
+        //adding elements to panels 
+        title.add(name);
+        title.setPreferredSize(new Dimension(850, 40));
+        title.setBackground(colorPalette.ezBlue);
+ 
+        space.add(blank);
+        space.setPreferredSize(new Dimension(850, 10));
+        space.setBackground(colorPalette.ezBlue);
+ 
+        promptPanel.add(prompt);
+        promptPanel.setPreferredSize(new Dimension(850, 30));
+        promptPanel.setBackground(colorPalette.ezBlue);
+ 
+        space2.add(blank);
+        space2.setPreferredSize(new Dimension(850, 10));
+        space2.setBackground(colorPalette.ezBlue);
+ 
+        listIDPanel.add(listID);
+        file.add(upload);
+        file.add(pathScroll); 
+
+        //dropBox.add(fileChooser);
+
+        deletePanel.add(delete);
+        deletePanel.add(deleteField);
+
+        button.add(clearList);
+        button.add(back);
+ 
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+        main.add(title);
+        main.add(space);
+        main.add(promptPanel);
+        main.add(space2);
+        main.add(listIDPanel);
+        main.add(file);
+        main.add(dropArea);
+        main.add(deletePanel);
+        main.add(button);
+ 
+        //adding for display
+        add(main);
+
+        //displaying panel
+        setVisible(true);
+        setSize(500, 500);
+
+    }//end of photoPanel
+
+    //creates an instance of ROIManager to read in selected files from the users device
+    private void uploadFiles(){
+        try{
+            Class<?> c = ROIManager.class;
+            Object o = c.getDeclaredConstructor().newInstance();
+            fileList.setText("");//clearing field for uploaded file list
+
+            Method m = ROIManager.class.getDeclaredMethod("readInFiles");
+            m.setAccessible(true);
+            m.invoke(o);
+
+            //displaying pathList to screen
+            Class<?> c2 = listManager.class;
+            Object o2 = c2.getDeclaredConstructor().newInstance();
+
+            Method m2 = listManager.class.getDeclaredMethod("updatePathList");
+            m2.setAccessible(true);
+            m2.invoke(o2);
+
+            //user can now choose to delete a file that was uploaded
+            delete.setEnabled(true);
+            deleteField.setEditable(true);
+            clearList.setEnabled(true);
+
+        }catch(Exception ex){//catching exception thrown for invalid document inputs
+            System.out.println("Exception thrown: " + ex);//printing error message 
+        } 
+    }//end of uploadFiles
+
+    //deletes a file based on user selection 
+    private void deleteFile(){
+        if(deleteField.getText().isEmpty()){//trying to delete something when nothing was entered 
+            JOptionPane.showMessageDialog(null, "Please enter a file to delete. Ex 1 from 1: File");
+        }
+        else {//something was entered in text field
+            String fieldResponse = deleteField.getText();//obtaining entered text 
+            if(fieldResponse.matches("\\d+")){ //entered field was an integer 
+
+                int fieldInt = Integer.parseInt(fieldResponse);//converting the entered response into an integer
+                if(fieldInt >= 1 && fieldInt < ROIManager.identifyer){//not within scope of added files
+                    try{
+                        Class<?> c = listManager.class;
+                        Object o = c.getDeclaredConstructor().newInstance();
+        
+                        Method m = listManager.class.getDeclaredMethod("searchAndRemove", String.class);
+                        m.setAccessible(true);
+                        m.invoke(o, fieldResponse);
+        
+                    }catch(Exception ex){//catching exception thrown for invalid document inputs
+                        System.out.println("Exception thrown: " + ex);//printing error message 
+                    } 
+                } else {//number is within the scope
+                    JOptionPane.showMessageDialog(null, "Please enter a valid number");
+                }
+
+            } else { //entered field was not an integer
+                JOptionPane.showMessageDialog(null, "Please enter a valid number Ex: 1");
+            }
+        }
+    }//end of deleteFile
+
+    //resets fields for new information
+    private void clear(){
+        
+        //resetting list display to be empty
+        fileList.setText("No Files Have Been Uploaded");
+        
+        //resetting delete acessibility to false
+        delete.setEnabled(false);
+        deleteField.setText("");
+        deleteField.setEditable(false);
+
+        //resetting roi managers ID to 1
+        ROIManager.identifyer = 1;
+
+        //deleting text files and resetting vectors
+        ROIManager.output.delete();
+        roiPanel.roiTable.setText("Empty");
+        ROIManager.v.clear();//clearing the vector 
+    
+        //checking if files exists as it is created when an element is deleted
+        File pathFile = new File("pathList.txt");
+        if(pathFile.exists()){
+            listManager.outputList.delete();
+            photoPanel.fileList.setText("No Files Have Been Uploaded");
+        }
+        ROIManager.pathList.clear();//clearing the vector since it is created when files have been uploaded
+
+    }//end of clear
+
+    //if button is clicked, move to a different panel/preform actions
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == upload){//uploading order reciepts
+            uploadFiles();
+        }
+        else if(e.getSource() == delete){
+            deleteFile();
+        } 
+        else if(e.getSource() == clearList){
+            clear();
+        }
+        else if(e.getSource() == back){//returning to homescreen
+            controller.getInstance().changeCard("Homescreen");
+            deleteField.setText("");
+
+            if(ROIManager.pathList.size() == 0){
+                fileList.setText("No Files Have Been Uploaded");
+            }
+        }
+
+    }//end of actionPreformed 
+
+}//end of class
+
