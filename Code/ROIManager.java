@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.PrintWriter;
 import java.util.Vector;
+import java.util.ArrayList;
 
 public class ROIManager{
 
@@ -18,6 +19,8 @@ public class ROIManager{
     static Integer identifyer = 1;//for vectors id number 
     static Double totalTotal = 0.00, totalShipCost = 0.00, totalSoldPrice = 0.00, totalShipPaid = 0.00, totalTax = 0.00, totalProfit = 0.00;//for total collection
     
+    public static ArrayList<orderObject> orders = new ArrayList<orderObject>();
+
     //user selecting files from device 
     public static void readInFiles(){
 
@@ -36,10 +39,10 @@ public class ROIManager{
 
             for(File file : files){//itterate through collected files 
 
-                readInSingleFile(file);
+                readInSingleFile(file);//read in each file 
             }
 
-            addTotalsToTable();
+            addTotalsToTable();//sum up totals to table 
            
         }
 
@@ -58,7 +61,8 @@ public class ROIManager{
             String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
 
             outputWriter("ID: " + identifyer + "\n" + docText, true);//getting info from each pdf and adding to output.text file
-            totalCollection(docText, true);
+            //totalCollection(docText, true);
+            totalCollection(identifyer - 1, true);
 
             pdfDocument.close();//closing document
             fis.close();//closing file input stream
@@ -123,6 +127,8 @@ public class ROIManager{
         if(vector == true){
             //adding extracted info into a vector of strings 
             v.add("ID: " + id + "\nOrder number " + orderNum + "\n" + total + "\nCost: " + shipCost + "\n" + soldPrice + "\n" + shipPaid + "\n" + tax + "\n");
+        
+            orders.add(new orderObject(id, orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC));
         }
 
         //adding all collected information to output.text file
@@ -148,7 +154,7 @@ public class ROIManager{
     }//end of creating ROI table 
 
     //adds totals of each row to the end of the file
-    private static void addTotalsToTable(){
+    static void addTotalsToTable(){
         //try adding information to file
         try(FileWriter writer = new FileWriter("output.txt", true);
             BufferedWriter bw = new BufferedWriter(writer);
@@ -170,35 +176,18 @@ public class ROIManager{
 
     //collects all information from pdf texts and continous to sum up each entered string 
     //utilizes boolean to determine if the total is being added or subtracted from current totals
-    protected static void totalCollection(String s, boolean add){
+    protected static void totalCollection(int id, boolean add){
 
         //strings to collect information
         String total, shipCost, soldPrice, shipPaid, tax, profitC;
   
-        nextEnd = 0;//setting int to 0 for each new file being read 
-
-        //collecting each string segment from the files 
-        total = convertAndFind(s, "$", nextEnd, 0);
-        shipCost = convertAndFind(s, "Cost: ", nextEnd, 6);
-        soldPrice = convertAndFind(s, "$", nextEnd, 1);
-        shipPaid = convertAndFind(s, "$", nextEnd, 1);
-        tax = convertAndFind(s, "$",nextEnd, 1);
-
-        if(add == true){//if adding into from originally collected string of pdf and tax was not charged check
-            //if sales taxes were not collected, set tax to 0
-            if(s.indexOf("Sales tax (eBay collected)") == -1){
-                tax = "$0.00";
-            }
-        }
-
-        //calculating profit after costs and if sales tax was collected 
-        profitC = profitCalc(total, shipCost, tax); 
-
         //removing '$' from strings
-        total = total.substring(1);
-        shipCost = shipCost.substring(1);
-        tax = tax.substring(1);
-        profitC = profitC.substring(1);
+        total = orders.get(id).getTotal().substring(1);
+        shipCost = orders.get(id).getShipCost().substring(1);
+        soldPrice = orders.get(id).getSoldPrice().substring(1);
+        shipPaid = orders.get(id).getShipPaid().substring(1);
+        tax = orders.get(id).getTax().substring(1);
+        profitC = orders.get(id).getProfit().substring(1);
 
         //adding or deleting from current total collected
         setFinalTotal(total, add);

@@ -27,20 +27,14 @@ public class listManager {
         if(index >= 0){//element was found
 
             //subtracting from the totals collected 
-            try{
-                Class<?> c = ROIManager.class;
-                Object o = c.getDeclaredConstructor().newInstance();
 
-                //updating totals to be subtracted from what was first gathered
-                Method m = ROIManager.class.getDeclaredMethod("totalCollection", String.class, boolean.class);
-                m.setAccessible(true);
-                m.invoke(o, ROIManager.v.get(index), false);
-            } catch(Exception e){
-                System.out.println("Exception: " + e);
-            }
+            ROIManager.totalCollection(index, false);
 
             //remove element from vectors
             ROIManager.v.remove(index);
+
+            ROIManager.orders.remove(index);
+
             ROIManager.pathList.remove(index);
 
             //update each text file created
@@ -54,32 +48,20 @@ public class listManager {
 
     //updates entire ROI table when called 
     private static void updateROI(Vector<String> v){
-        try{
-            //utilizing an instance of ROIManager to update each segment 
-            Class<?> c = ROIManager.class;
-            Object o = c.getDeclaredConstructor().newInstance();
+       
+        //rewriting header
+        ROIManager.roiHeader();
 
-            //resetting file to roi header
-            Method m = ROIManager.class.getDeclaredMethod("roiHeader");
-            m.setAccessible(true);
-            m.invoke(o);
+        //rewriting all order information into the text file
+        for(int i = 0; i < v.size(); i++){
 
-            //rewriting all order information into the text file
-            for(int i = 0; i < v.size(); i++){
-
-                Method m2 = ROIManager.class.getDeclaredMethod("outputWriter", String.class, boolean.class);
-                m2.setAccessible(true);
-                m2.invoke(o, v.get(i), false);
-            }
-
-            //rewriting all totals into the end of the text file
-            Method m3 = ROIManager.class.getDeclaredMethod("addTotalsToTable");
-            m3.setAccessible(true);
-            m3.invoke(o);
-            
-        }catch(Exception ex){//catching exception thrown for invalid document inputs
-            System.out.println("Exception thrown: " + ex);//printing error message 
+            ROIManager.outputWriter(v.get(i), false);
         }
+
+        //rewriting all totals into the end of the text file
+        ROIManager.addTotalsToTable();
+            
+       
     }//end of update
 
     //will update the pathlist text file and display on screen when called

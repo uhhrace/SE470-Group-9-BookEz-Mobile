@@ -76,28 +76,28 @@ public class roiPanel extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == display || e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
 
-                File f = new File("output.txt");
-                if(f.exists()){//verifying that output text file has been created 
+            File f = new File("output.txt");
+            if(f.exists()){//verifying that output text file has been created 
 
-                    if(e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
+                if(e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
                         
-                        if(e.getSource() == highProfitSort){
-                            sortManager.profitSort(true);
-                        } else if(e.getSource() == lowProfitSort){
-                            sortManager.profitSort(false);
-                        }
+                    if(e.getSource() == highProfitSort){
+                        sortManager.profitSort(true);
+                    } else if(e.getSource() == lowProfitSort){
+                        sortManager.profitSort(false);
+                    }
                      
-                    } 
-                    //default to display roi table
-                    try{  
-                            FileReader reader = new FileReader(ROIManager.output.getPath());
-                            BufferedReader br = new BufferedReader(reader);
-                            roiTable.read( br, null );
-                            br.close();
-                            roiTable.requestFocus();
-                        } catch(Exception e2) { 
-                            System.out.println(e2); 
-                        }
+                } 
+                //default to display roi table
+                try{  
+                        FileReader reader = new FileReader(ROIManager.output.getPath());
+                        BufferedReader br = new BufferedReader(reader);
+                        roiTable.read( br, null );
+                        br.close();
+                        roiTable.requestFocus();
+                    } catch(Exception e2) { 
+                        System.out.println(e2); 
+                    }
             } else {//output.text has not been created yet 
                 JOptionPane.showMessageDialog(null, "Please upload files first");
             }

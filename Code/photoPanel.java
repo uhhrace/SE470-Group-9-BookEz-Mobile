@@ -115,6 +115,28 @@ public class photoPanel extends JPanel implements ActionListener{
 
     }//end of photoPanel
 
+    //if button is clicked, move to a different panel/preform actions
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == upload){//uploading order reciepts
+            uploadFiles();
+        }
+        else if(e.getSource() == delete){
+            deleteFile();
+        } 
+        else if(e.getSource() == clearList){
+            clear();
+        }
+        else if(e.getSource() == back){//returning to homescreen
+            controller.getInstance().changeCard("Homescreen");
+            deleteField.setText("");
+
+            if(ROIManager.pathList.size() == 0){
+                fileList.setText("No Files Have Been Uploaded");
+            }
+        }
+
+    }//end of actionPreformed 
+
     //creates an instance of ROIManager to read in selected files from the users device
     private void uploadFiles(){
 
@@ -182,27 +204,5 @@ public class photoPanel extends JPanel implements ActionListener{
         ROIManager.pathList.clear();//clearing the vector since it is created when files have been uploaded
 
     }//end of clear
-
-    //if button is clicked, move to a different panel/preform actions
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource() == upload){//uploading order reciepts
-            uploadFiles();
-        }
-        else if(e.getSource() == delete){
-            deleteFile();
-        } 
-        else if(e.getSource() == clearList){
-            clear();
-        }
-        else if(e.getSource() == back){//returning to homescreen
-            controller.getInstance().changeCard("Homescreen");
-            deleteField.setText("");
-
-            if(ROIManager.pathList.size() == 0){
-                fileList.setText("No Files Have Been Uploaded");
-            }
-        }
-
-    }//end of actionPreformed 
 
 }//end of class
