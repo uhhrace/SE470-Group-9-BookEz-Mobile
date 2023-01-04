@@ -15,7 +15,8 @@ public class sortManager{
 
             //write vectors elements into file as they were sorted 
             for(int i = 0; i < ROIManager.v.size(); i++){
-                ROIManager.outputWriter(ROIManager.v.get(i), false);
+               // ROIManager.addInfoToTable();
+               //work in progress 
             }
 
         }catch(Exception ex){//catching exception thrown for invalid document inputs

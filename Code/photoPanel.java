@@ -162,14 +162,7 @@ public class photoPanel extends JPanel implements ActionListener{
             String fieldResponse = deleteField.getText();//obtaining entered text 
             if(fieldResponse.matches("\\d+")){ //entered field was an integer 
 
-                int fieldInt = Integer.parseInt(fieldResponse);//converting the entered response into an integer
-                if(fieldInt >= 1 && fieldInt < ROIManager.identifyer){//not within scope of added files
-        
-                    listManager.searchAndRemove(fieldResponse);
-                } else {//number is within the scope
-                    JOptionPane.showMessageDialog(null, "Please enter a valid number");
-                }
-
+                listManager.searchAndRemove(fieldResponse);//remove element from hash map
             } else { //entered field was not an integer
                 JOptionPane.showMessageDialog(null, "Please enter a valid number Ex: 1");
             }

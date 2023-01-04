@@ -2,8 +2,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Vector;
 
@@ -11,36 +9,26 @@ import javax.swing.JOptionPane;
 
 public class listManager {
     public static File outputList;
-    private static int index;
 
     //itterates through ROIManager.v vector containing all the order info, once the key is found it is deleted and all information is updated
     public static void searchAndRemove (String element){
 
-        Collections.sort(ROIManager.v);//sorting vector before search
+        int elem = Integer.parseInt(element);//converts desired element to be deleted into an integer
 
-        try{//handling exceptions thrown from binary search 
-            index = Collections.binarySearch(ROIManager.v, element, new StringComparator());//searching for element entered
-        } catch(Exception e){
-            System.out.println("Exception: " + e);
-        }
+        if(ROIManager.orders.containsKey(elem)){//checking if element to be removed is in te hash map
 
-        if(index >= 0){//element was found
+            orderObject deleteOrder = ROIManager.orders.get(elem);//locates order with matching key 
+            ROIManager.orders.remove(deleteOrder.getID());//removes order from hash map
 
-            //subtracting from the totals collected 
+            ROIManager.totalCollection();//subtracting from the totals collected 
 
-            ROIManager.totalCollection(index, false);
-
-            //remove element from vectors
-            ROIManager.v.remove(index);
-
-            ROIManager.orders.remove(index);
-
-            ROIManager.pathList.remove(index);
+            ///////////issue deletes correct field but after the fields are moved over and 2 now becomes 0 in the pathList vector
+            System.out.println("Element id field: " + (deleteOrder.getID() - 1));
+            ROIManager.pathList.remove(deleteOrder.getID() - 1);//remove element from pathList
 
             //update each text file created
             updatePathList();
             updateROI(ROIManager.v);
-
         } else {//element was not found
             JOptionPane.showMessageDialog(null, "Element was not found");
         }
@@ -53,10 +41,7 @@ public class listManager {
         ROIManager.roiHeader();
 
         //rewriting all order information into the text file
-        for(int i = 0; i < v.size(); i++){
-
-            ROIManager.outputWriter(v.get(i), false);
-        }
+        ROIManager.addInfoToTable();
 
         //rewriting all totals into the end of the text file
         ROIManager.addTotalsToTable();

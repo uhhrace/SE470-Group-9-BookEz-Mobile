@@ -1,9 +1,10 @@
 public class orderObject {
 
-    private String id, orderNum, total, shipCost, soldPrice, shipPaid, tax, profit;
+    int id;
+    private String orderNum, total, shipCost, soldPrice, shipPaid, tax, profit;
 
     //consturctor for object text
-    public orderObject(String id, String orderNum, String total, String shipCost, String soldPrice, String shipPaid, String tax, String profit){
+    public orderObject(int id, String orderNum, String total, String shipCost, String soldPrice, String shipPaid, String tax, String profit){
         this.id = id;
         this.orderNum = orderNum;
         this.total = total;
@@ -15,11 +16,11 @@ public class orderObject {
     }
 
     //setter and getter methods
-    public void setID(String id){
+    public void setID(int id){
         this.id = id;
     }
 
-    public String getID(){
+    public int getID(){
         return id;
     }
 
