@@ -8,12 +8,12 @@ import java.util.List;
 
 public class sortManager{
 
-    //converting hashmap of orderObjects into a list
-    private static List<orderObject> list = new ArrayList<>(ROIManager.orders.values());
-
     //sorting by profit made in either ascending or descending order
     //boolean descides the order to be sorted in
     public static void profitSort(boolean ascending){
+
+        //converting hashmap of orderObjects into a list
+        List<orderObject> list = new ArrayList<>(ROIManager.orders.values());
 
         //sorting the entire hash map of order objects based on profit 
         Collections.sort(list, new Comparator<orderObject>(){

@@ -192,7 +192,7 @@ public class photoPanel extends JPanel implements ActionListener{
         File pathFile = new File("pathList.txt");
         if(pathFile.exists()){
             listManager.outputList.delete();
-            photoPanel.fileList.setText("No Files Have Been Uploaded");
+            photoPanel.fileList.setText("         No Files Have Been Uploaded");
         }
         ROIManager.paths.clear();//clearing the vector since it is created when files have been uploaded
 

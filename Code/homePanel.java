@@ -98,7 +98,7 @@ public class homePanel extends JPanel implements ActionListener{
         }
         else if(e.getSource() == exit){
 
-            //deleting output.text files only if they were created 
+            //deleting output.text files only if they have something in them ie were created 
             File out = new File("output.txt");
             File path = new File("pathList.txt");
             if(out.length() > 0){

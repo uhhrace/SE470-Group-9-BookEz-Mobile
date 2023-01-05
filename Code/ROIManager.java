@@ -62,6 +62,8 @@ public class ROIManager{
             PDFTextStripper pdfTextStripper = new PDFTextStripper();//obtain text
             String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
 
+            System.out.println(docText);
+
             orderCollector(docText, identifyer);//getting info from each pdf and adding to output.text file
 
             pdfDocument.close();//closing document
@@ -91,6 +93,10 @@ public class ROIManager{
         //if sales taxes were not collected, set tax to 0
         if(s.indexOf("Sales tax (eBay collected)") == -1){
             tax = "$0.00";
+        }
+
+        if(s.indexOf("Cost:") == -1){
+            shipCost = "$0.00";
         }
         
         //calculating profit after costs and if sales tax was collected 
@@ -134,7 +140,7 @@ public class ROIManager{
         {
             Collection<orderObject> values = orders.values();//obtain all current orders 
 
-            //add al their information into the output file
+            //add alt their information into the output file
             for(orderObject order : values){
                 out.println(order.getTotal() + "\t" + order.getSoldPrice() + "\t" + order.getShipPaid() + "\t" + 
                 order.getShipCost() + "\t" + order.getTax() + "\t" + order.getProfit() + "\t" + order.getOrderNum() + "\n");
@@ -208,4 +214,3 @@ public class ROIManager{
     }//end of convert and find 
 
 }//end of class
-
