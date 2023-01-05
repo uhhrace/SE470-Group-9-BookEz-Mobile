@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Vector;
 
@@ -22,9 +23,7 @@ public class listManager {
 
             ROIManager.totalCollection();//subtracting from the totals collected 
 
-            ///////////issue deletes correct field but after the fields are moved over and 2 now becomes 0 in the pathList vector
-            System.out.println("Element id field: " + (deleteOrder.getID() - 1));
-            ROIManager.pathList.remove(deleteOrder.getID() - 1);//remove element from pathList
+            ROIManager.paths.remove(deleteOrder.getID());//remove element from pathList
 
             //update each text file created
             updatePathList();
@@ -56,8 +55,9 @@ public class listManager {
         try{
             FileWriter writer = new FileWriter(outputList);//rewriting the file 
 
-            for(int i = 0; i < ROIManager.pathList.size(); i++){//writing all paths into the file 
-                writer.write(ROIManager.pathList.get(i));
+            Collection<pathObject> values = ROIManager.paths.values();
+            for(pathObject path : values){//writing all paths into the file 
+                writer.write(path.getPath());
             }
 
             //closing writer 

@@ -111,7 +111,7 @@ public class homePanel extends JPanel implements ActionListener{
                 listManager.outputList.delete();
                 photoPanel.fileList.setText("Empty");
 
-                ROIManager.pathList.clear();//clearing the vector 
+                ROIManager.paths.clear();//clearing the vector 
             }
             System.exit(0);//ends program 
 

@@ -15,14 +15,12 @@ public class ROIManager{
 
     public static File output;//output.text file collects all information from PDFs
     public static Vector<String> v = new Vector<String>();//stores all information collected from the PDFs
-    public static Vector<String> pathList = new Vector<String>();//stores all the paths from each PDF uploaded
+    public static Integer identifyer = 1;//for vectors id number 
+
     private static Integer nextEnd;//used to find desired strings 
-    static Integer identifyer = 1;//for vectors id number 
-
-    static Double totalTotal = 0.00, totalShipCost = 0.00, totalSoldPrice = 0.00, 
-    totalShipPaid = 0.00, totalTax = 0.00, totalProfit = 0.00;//for total collection
-
-    static HashMap<Integer, orderObject> orders = new HashMap<Integer, orderObject>();
+    public static HashMap<Integer, orderObject> orders = new HashMap<Integer, orderObject>();
+    public static HashMap<Integer, pathObject> paths = new HashMap<Integer, pathObject>();
+    private static totalObject totals = new totalObject(0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
 
     //user selecting files from device 
     public static void readInFiles(){
@@ -48,17 +46,16 @@ public class ROIManager{
             totalCollection();//adding to totals 
             addInfoToTable();//adding all collected information to output.text file
             addTotalsToTable();//sum up totals to table 
-           
         }
-
     }//end of readInFiles
 
+    //reads in a file and extracts the desired information 
     private static void readInSingleFile(File file){
         try{
             //getting path name and convering into a displayable method for user 
             String path = file.getAbsolutePath() + "\n";//collect path 
             path = identifyer + ": " + convertAndFind(path, "Ebay Orders/", 0, 12) + "\n";//collecting file name selected by user
-            pathList.add(path);
+            paths.put(identifyer, new pathObject(identifyer, path));//adding paths to hash map
             
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
             PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
@@ -73,33 +70,10 @@ public class ROIManager{
         } catch(java.io.IOException ex){//catching exception thrown for invalid document inputs
             System.out.println("File cannot be opened: " + ex);//printing error message 
         } 
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////Writing To Txt File Functions///////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-
-    //wiriting in header for each column and file formatting 
-    protected static void roiHeader(){
-        output = new File("output.txt");//creating output.text file 
-
-        try{
-            FileWriter writer = new FileWriter(output);//writing in file 
-
-            //header information for each column 
-            writer.write("ROI Table\n");
-            writer.write("Order Total\tSold For\tShip Charged\tShip Cost\tTaxes\tProfit\tOrder Number\t\n");
-           
-            writer.flush();
-            writer.close();//closing writer 
-            
-        } catch(java.io.IOException ex){//catching exception thrown for invalid document used
-            System.out.println("File cannot be opened: " + ex);//printing error message 
-        } 
-    }//end of ROI Header
+    }//end of readInSingleFile function
 
     //used to extract the desired information from an ebay order reciept pdf and add the information into an order object in a hash map
-    protected static void orderCollector(String s, int id){
+    private static void orderCollector(String s, int id){
 
         //strings to collect information
         String orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC;
@@ -120,12 +94,35 @@ public class ROIManager{
         }
         
         //calculating profit after costs and if sales tax was collected 
-        profitC = profitCalc(total, shipCost, tax);      
+        profitC = utility.profitCalc(total, shipCost, tax);      
 
         //adding extracted info into a orderObject
         orders.put(id, new orderObject(id, orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC));
 
     }//end of orderCollector
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////Writing To Txt File Functions///////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+
+    //wiriting in header for each column and file formatting 
+    public static void roiHeader(){
+        output = new File("output.txt");//creating output.text file 
+
+        try{
+            FileWriter writer = new FileWriter(output);//writing in file 
+
+            //header information for each column 
+            writer.write("ROI Table\n");
+            writer.write("Order Total\tSold For\tShip Charged\tShip Cost\tTaxes\tProfit\tOrder Number\t\n");
+           
+            writer.flush();
+            writer.close();//closing writer 
+            
+        } catch(java.io.IOException ex){//catching exception thrown for invalid document used
+            System.out.println("File cannot be opened: " + ex);//printing error message 
+        } 
+    }//end of ROI Header
 
     //adding each orders information into output.text file 
     protected static void addInfoToTable(){
@@ -150,7 +147,7 @@ public class ROIManager{
     }//end of creating ROI table 
 
     //adds totals of each row to the end of the file
-    static void addTotalsToTable(){
+    public static void addTotalsToTable(){
         //try adding information to file
         try(FileWriter writer = new FileWriter("output.txt", true);
             BufferedWriter bw = new BufferedWriter(writer);
@@ -159,8 +156,8 @@ public class ROIManager{
             //adding in the information to file
             out.println("---------------------------------------------------------------------------------------");
             out.println("Totals from each row\n");
-            out.println(getFinalTotal() + "\t" + getTotalSoldPrice() + "\t" + getTotalShipPaid() + "\t" + 
-            getTotalShipCost() + "\t" + getTotalTax() + "\t" + getTotalProfit() + "\t" + "N/A");
+            out.println(totals.getFinalTotal() + "\t" + totals.getTotalSoldPrice() + "\t" + totals.getTotalShipPaid() + "\t" + 
+            totals.getTotalShipCost() + "\t" + totals.getTotalTax() + "\t" + totals.getTotalProfit() + "\t" + "N/A");
             
         } catch(java.io.IOException ex){//catching exception thrown for invalid document or document not existing 
             System.out.println("File cannot be opened: " + ex);//printing error message 
@@ -168,92 +165,35 @@ public class ROIManager{
     }//end of add totals to table
 
     ///////////////////////////////////////////////////////////////////////
-    /////////////////Total Collection Functions////////////////////////////
+    /////////////////Total Collection Function////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 
     //collects all information from pdf texts and continous to sum up each entered string 
     //utilizes boolean to determine if the total is being added or subtracted from current totals
-    protected static void totalCollection(){
+    public static void totalCollection(){
 
-        totalTotal = 0.00;
-        totalShipCost = 0.00;
-        totalSoldPrice = 0.00;
-        totalShipPaid = 0.00;
-        totalTax = 0.00; 
-        totalProfit = 0.00;
+        totals = new totalObject();//resets all fields to 0;
 
         Collection<orderObject> values = orders.values();
 
         for(orderObject order : values){
 
             //adding or deleting from current total collected
-            setFinalTotal(order.getTotal().substring(1));
-            setTotalShipCost(order.getShipCost().substring(1));
-            setTotalSoldPrice(order.getSoldPrice().substring(1));
-            setTotalShipPaid(order.getShipPaid().substring(1));
-            setTotalTax(order.getTax().substring(1));
-            setTotalProfit(order.getProfit().substring(1));
+            totals.setFinalTotal(order.getTotal().substring(1));
+            totals.setTotalShipCost(order.getShipCost().substring(1));
+            totals.setTotalSoldPrice(order.getSoldPrice().substring(1));
+            totals.setTotalShipPaid(order.getShipPaid().substring(1));
+            totals.setTotalTax(order.getTax().substring(1));
+            totals.setTotalProfit(order.getProfit().substring(1));
         }
     }//end of totalCollection
 
-
-    //string s is used in all set functions as the holder of dollar amounts for said total
-    //add is used to determine wether we are adding to the current totals or deleting 
-    //if we are deleting from a total we have to use ROIManager.NAME in order to delet as it is dome from listManager
-    public static void setFinalTotal(String s){
-        totalTotal = (double) Math.round((totalTotal + Double.parseDouble(s)) * 100) / 100;
-    }
-
-    public static double getFinalTotal(){
-        return totalTotal;
-    }
-
-    public static void setTotalShipCost(String s){
-        totalShipCost = (double) Math.round((totalShipCost + Double.parseDouble(s)) * 100) / 100;
-    }
-
-    public static double getTotalShipCost(){
-        return totalShipCost;
-    }
-
-    public static void setTotalSoldPrice(String s){
-        totalSoldPrice = (double) Math.round((totalSoldPrice + Double.parseDouble(s)) * 100) / 100;
-    }
-
-    public static double getTotalSoldPrice(){
-        return totalSoldPrice;
-    }
-
-    public static void setTotalShipPaid(String s){
-        totalShipPaid = (double) Math.round((totalShipPaid + Double.parseDouble(s)) * 100) / 100;
-    }
-
-    public static double getTotalShipPaid(){
-        return totalShipPaid;
-    }
-
-    public static void setTotalTax(String s){
-        totalTax = (double) Math.round((totalTax + Double.parseDouble(s)) * 100) / 100;
-    }
-
-    public static double getTotalTax(){
-        return totalTax;
-    }
-
-    public static void setTotalProfit(String s){
-        totalProfit = (double) Math.round((totalProfit + Double.parseDouble(s)) * 100) / 100;
-    }
-
-    public static double getTotalProfit(){
-        return totalProfit;
-    } 
-
     ///////////////////////////////////////////////////////////////////////
-    /////////////////////////Utility functions/////////////////////////////
+    /////////////////////////Utility function/////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 
     //finds a string segment and runs till the end of the line
-    static String convertAndFind(String docText, String id, int idInt, int mod){
+    private static String convertAndFind(String docText, String id, int idInt, int mod){
 
         String result;//result to be returned 
         nextEnd = idInt;//setting to idInt 
@@ -266,30 +206,6 @@ public class ROIManager{
         return result;//returning result 
 
     }//end of convert and find 
-
-    //calculates profit
-    static String profitCalc(String total, String shipCost, String tax){
-
-        double profit = 0.0;//used for calculations
-        
-        //turning each string into a double for calculations 
-        double t = Double.parseDouble(total.substring(1));
-        double sC = Double.parseDouble(shipCost.substring(1));
-        double ta = Double.parseDouble(tax.substring(1));
-        
-        profit = t - sC - ta;//calculating profit 
-        
-        profit = (double) Math.round(profit * 100) / 100;//rounding off two decimal places
-        String profitString = "$" + profit + "";//changing to string and adding $ for formatting
-
-        //checking of profit has two place values for the cents 
-        if(profitString.length() == 5){
-            profitString += "0";//appending 0 if has one 
-        }
-
-        return profitString;//returning profit obtained 
-
-    }//end of profit calculation
 
 }//end of class
 

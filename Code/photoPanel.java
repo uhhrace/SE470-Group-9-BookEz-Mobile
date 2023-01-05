@@ -130,8 +130,8 @@ public class photoPanel extends JPanel implements ActionListener{
             controller.getInstance().changeCard("Homescreen");
             deleteField.setText("");
 
-            if(ROIManager.pathList.size() == 0){
-                fileList.setText("No Files Have Been Uploaded");
+            if(ROIManager.paths.isEmpty()){
+                fileList.setText("         No Files Have Been Uploaded");
             }
         }
 
@@ -194,7 +194,7 @@ public class photoPanel extends JPanel implements ActionListener{
             listManager.outputList.delete();
             photoPanel.fileList.setText("No Files Have Been Uploaded");
         }
-        ROIManager.pathList.clear();//clearing the vector since it is created when files have been uploaded
+        ROIManager.paths.clear();//clearing the vector since it is created when files have been uploaded
 
     }//end of clear
 
