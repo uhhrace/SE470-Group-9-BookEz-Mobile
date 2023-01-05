@@ -84,7 +84,7 @@ public class roiPanel extends JPanel implements ActionListener{
                     if(e.getSource() == highProfitSort){
                         sortManager.profitSort(true);
                     } else if(e.getSource() == lowProfitSort){
-                        sortManager.profitSort(false);
+                       sortManager.profitSort(false);
                     }
                      
                 } 
