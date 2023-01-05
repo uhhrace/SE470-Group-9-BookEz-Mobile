@@ -85,7 +85,7 @@ public class homePanel extends JPanel implements ActionListener{
         setVisible(true);
         setSize(500, 500);
 
-    }//end of main class
+    }//end of homePanel
  
     //if button is clicked preform an action
     public void actionPerformed(ActionEvent e){
@@ -101,13 +101,13 @@ public class homePanel extends JPanel implements ActionListener{
             //deleting output.text files only if they were created 
             File out = new File("output.txt");
             File path = new File("pathList.txt");
-            if(out.exists()){
+            if(out.length() > 0){
                 ROIManager.output.delete();
                 roiPanel.roiTable.setText("Empty");
 
                 ROIManager.v.clear();//clearing the vector 
             } 
-            if(path.exists()){
+            if(path.length() > 0){
                 listManager.outputList.delete();
                 photoPanel.fileList.setText("Empty");
 
