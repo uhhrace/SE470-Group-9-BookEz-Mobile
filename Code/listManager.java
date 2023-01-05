@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -27,14 +26,14 @@ public class listManager {
 
             //update each text file created
             updatePathList();
-            updateROI(ROIManager.v);
+            updateROI();
         } else {//element was not found
             JOptionPane.showMessageDialog(null, "Element was not found");
         }
     }//end of searchAndRemove function
 
     //updates entire ROI table when called 
-    private static void updateROI(Vector<String> v){
+    private static void updateROI(){
        
         //rewriting header
         ROIManager.roiHeader();

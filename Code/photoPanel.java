@@ -186,7 +186,7 @@ public class photoPanel extends JPanel implements ActionListener{
         //deleting text files and resetting vectors
         ROIManager.output.delete();
         roiPanel.roiTable.setText("Empty");
-        ROIManager.v.clear();//clearing the vector 
+        ROIManager.orders.clear();//clearing the hashmap 
     
         //checking if files exists as it is created when an element is deleted
         File pathFile = new File("pathList.txt");

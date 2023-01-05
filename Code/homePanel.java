@@ -105,7 +105,7 @@ public class homePanel extends JPanel implements ActionListener{
                 ROIManager.output.delete();
                 roiPanel.roiTable.setText("Empty");
 
-                ROIManager.v.clear();//clearing the vector 
+                ROIManager.orders.clear();//clearing the hashmap 
             } 
             if(path.length() > 0){
                 listManager.outputList.delete();

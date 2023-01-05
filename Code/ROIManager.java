@@ -7,14 +7,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument; 
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.PrintWriter;
-import java.util.Vector;
 import java.util.HashMap;
 import java.util.Collection;
 
 public class ROIManager{
 
     public static File output;//output.text file collects all information from PDFs
-    public static Vector<String> v = new Vector<String>();//stores all information collected from the PDFs
     public static Integer identifyer = 1;//for vectors id number 
 
     private static Integer nextEnd;//used to find desired strings 
