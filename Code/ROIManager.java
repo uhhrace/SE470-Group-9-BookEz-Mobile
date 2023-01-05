@@ -54,15 +54,14 @@ public class ROIManager{
         try{
             //getting path name and convering into a displayable method for user 
             String path = file.getAbsolutePath() + "\n";//collect path 
-            path = identifyer + ": " + convertAndFind(path, "Ebay Orders/", 0, 12) + "\n";//collecting file name selected by user
+            int pathSegment = path.indexOf("Sales");
+            path = identifyer + ": " + path.substring(pathSegment);//collecting file name selected by user
             paths.put(identifyer, new pathObject(identifyer, path));//adding paths to hash map
             
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
             PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
             PDFTextStripper pdfTextStripper = new PDFTextStripper();//obtain text
             String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
-
-            System.out.println(docText);
 
             orderCollector(docText, identifyer);//getting info from each pdf and adding to output.text file
 
@@ -85,18 +84,24 @@ public class ROIManager{
         //collecting each string segment from the files 
         orderNum = convertAndFind(s, "Order number ", nextEnd, 13);
         total = convertAndFind(s, "$", nextEnd, 0);
+        int afterTotal = nextEnd;//grabs totals nextEnd value to look for a dollar sign after
         shipCost = convertAndFind(s, "Cost: ", nextEnd, 6);
         soldPrice = convertAndFind(s, "$", nextEnd, 0);
         shipPaid = convertAndFind(s, "$", nextEnd, 0);
         tax = convertAndFind(s, "$",nextEnd, 0);
 
+        //no "Cost: " menas that shipping was not paid for and the order had a tracking number added instead
+        if(s.indexOf("Cost:") == -1){
+            shipCost = "$0.00";//set shipCost to 0
+            nextEnd = afterTotal;//continue to search for the other values after total
+            soldPrice = convertAndFind(s, "$", nextEnd, 0);
+            shipPaid = convertAndFind(s, "$", nextEnd, 0);
+            tax = convertAndFind(s, "$",nextEnd, 0);
+        }
+
         //if sales taxes were not collected, set tax to 0
         if(s.indexOf("Sales tax (eBay collected)") == -1){
             tax = "$0.00";
-        }
-
-        if(s.indexOf("Cost:") == -1){
-            shipCost = "$0.00";
         }
         
         //calculating profit after costs and if sales tax was collected 
@@ -162,8 +167,8 @@ public class ROIManager{
             //adding in the information to file
             out.println("---------------------------------------------------------------------------------------");
             out.println("Totals from each row\n");
-            out.println(totals.getFinalTotal() + "\t" + totals.getTotalSoldPrice() + "\t" + totals.getTotalShipPaid() + "\t" + 
-            totals.getTotalShipCost() + "\t" + totals.getTotalTax() + "\t" + totals.getTotalProfit() + "\t" + "N/A");
+            out.println("$" + totals.getFinalTotal() + "\t$" + totals.getTotalSoldPrice() + "\t$" + totals.getTotalShipPaid() + "\t$" + 
+            totals.getTotalShipCost() + "\t$" + totals.getTotalTax() + "\t$" + totals.getTotalProfit() + "\t" + "N/A");
             
         } catch(java.io.IOException ex){//catching exception thrown for invalid document or document not existing 
             System.out.println("File cannot be opened: " + ex);//printing error message 
