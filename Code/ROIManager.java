@@ -14,11 +14,15 @@ public class ROIManager{
 
     public static File output;//output.text file collects all information from PDFs
     public static Integer identifyer = 1;//for vectors id number 
-
     private static Integer nextEnd;//used to find desired strings 
+
+    //HashMaps containing each orders information and paths 
     public static HashMap<Integer, orderObject> orders = new HashMap<Integer, orderObject>();
     public static HashMap<Integer, pathObject> paths = new HashMap<Integer, pathObject>();
-    private static totalObject totals = new totalObject(0.00, 0.00, 0.00, 0.00, 0.00, 0.00);
+
+    //objects contains the totals from each orders information
+    private static totalObject totals = new totalObject(0.00, 0.00, 0.00,
+    0.00, 0.00, 0.00);
 
     //user selecting files from device 
     public static void readInFiles(){
