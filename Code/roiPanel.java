@@ -10,6 +10,8 @@ public class roiPanel extends JPanel implements ActionListener{
     private JButton back, display, highProfitSort, lowProfitSort;
     private JLabel sortMess;
     static JTextArea roiTable;
+
+    static tableWriter t = new tableWriter();
     
     public roiPanel(){
         
@@ -49,6 +51,10 @@ public class roiPanel extends JPanel implements ActionListener{
         roiScroll.setBorder(null);
 
 
+        JTable table = new JTable(t);
+        table.setPreferredScrollableViewportSize(new Dimension(700, 500));
+        JScrollPane tableScroll = new JScrollPane(table);
+
         //creating JLables
         sortMess = new JLabel("Sort By: ");
         sortMess.setForeground(colorPalette.ezBlue);
@@ -58,7 +64,8 @@ public class roiPanel extends JPanel implements ActionListener{
         leftPanel.add(sortMess);
         leftPanel.add(highProfitSort);
         leftPanel.add(lowProfitSort);
-        middlePanel.add(roiScroll); 
+        //middlePanel.add(roiScroll); 
+        middlePanel.add(tableScroll); 
         bottomPanel.add(back); 
 
         //formatting panels 

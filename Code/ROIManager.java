@@ -56,8 +56,8 @@ public class ROIManager{
         try{
             //getting path name and convering into a displayable method for user 
             String path = file.getAbsolutePath() + "\n";//collect path 
-            int pathSegment = path.indexOf("Sales");
-            path = identifyer + ": " + path.substring(pathSegment);//collecting file name selected by user
+            int pathSegment = path.indexOf("Sales");//finds "Sales" segment of each order path
+            path = identifyer + ": " + path.substring(pathSegment);//collects order path from "Sales" on
             paths.put(identifyer, new pathObject(identifyer, path));//adding paths to hash map
             
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
@@ -149,6 +149,8 @@ public class ROIManager{
 
             //add alt their information into the output file
             for(orderObject order : values){
+                roiPanel.t.addRow(order);
+                
                 out.println(order.getTotal() + "\t" + order.getSoldPrice() + "\t" + order.getShipPaid() + "\t" + 
                 order.getShipCost() + "\t" + order.getTax() + "\t" + order.getProfit() + "\t" + order.getOrderNum() + "\n");
             }
