@@ -1,10 +1,11 @@
 public class orderObject {
 
     private int id;
-    private String orderNum, total, shipCost, soldPrice, shipPaid, tax, profit;
+    private String orderNum;
+    Double total, shipCost, soldPrice, shipPaid, tax, profit;
 
     //consturctor for object text
-    public orderObject(int id, String orderNum, String total, String shipCost, String soldPrice, String shipPaid, String tax, String profit){
+    public orderObject(int id, String orderNum, Double total, Double shipCost, Double soldPrice, Double shipPaid, Double tax, Double profit){
         
         this.id = id;
         this.orderNum = orderNum;
@@ -33,51 +34,51 @@ public class orderObject {
         return orderNum;
     }
 
-    public void setTotal(String total){
+    public void setTotal(Double total){
         this.total = total;
     }
 
-    public String getTotal(){
+    public Double getTotal(){
         return total;
     }
 
-    public void setShipCost(String shipCost){
+    public void setShipCost(Double shipCost){
         this.shipCost = shipCost;
     }
 
-    public String getShipCost(){
+    public Double getShipCost(){
         return shipCost;
     }
 
-    public void setSoldPrice(String soldPrice){
+    public void setSoldPrice(Double soldPrice){
         this.soldPrice = soldPrice;
     }
 
-    public String getSoldPrice(){
+    public Double getSoldPrice(){
         return soldPrice;
     }
 
-    public void setShipPaid(String shipPaid){
+    public void setShipPaid(Double shipPaid){
         this.shipPaid = shipPaid;
     }
 
-    public String getShipPaid(){
+    public Double getShipPaid(){
         return shipPaid;
     }
 
-    public void setTax(String tax){
+    public void setTax(Double tax){
         this.tax = tax;
     }
 
-    public String getTax(){
+    public Double getTax(){
         return tax;
     }
 
-    public void setProfit(String profit){
+    public void setProfit(Double profit){
         this.profit = profit;
     }
 
-    public String getProfit(){
+    public Double getProfit(){
         return profit;
     }
 

@@ -184,7 +184,7 @@ public class photoPanel extends JPanel implements ActionListener{
         ROIManager.identifyer = 1;
 
         //deleting text files and resetting vectors
-        ROIManager.output.delete();
+        //ROIManager.output.delete();
         roiPanel.roiTable.setText("Empty");
         ROIManager.orders.clear();//clearing the hashmap 
     

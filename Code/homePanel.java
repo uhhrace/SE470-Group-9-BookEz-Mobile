@@ -102,7 +102,7 @@ public class homePanel extends JPanel implements ActionListener{
             File out = new File("output.txt");
             File path = new File("pathList.txt");
             if(out.length() > 0){
-                ROIManager.output.delete();
+                //ROIManager.output.delete();
                 roiPanel.roiTable.setText("Empty");
 
                 ROIManager.orders.clear();//clearing the hashmap 

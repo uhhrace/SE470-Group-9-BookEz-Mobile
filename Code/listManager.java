@@ -20,7 +20,7 @@ public class listManager {
             orderObject deleteOrder = ROIManager.orders.get(elem);//locates order with matching key 
             ROIManager.orders.remove(deleteOrder.getID());//removes order from hash map
 
-            ROIManager.totalCollection();//subtracting from the totals collected 
+            //ROIManager.totalCollection();//subtracting from the totals collected 
 
             ROIManager.paths.remove(deleteOrder.getID());//remove element from pathList
 
@@ -36,7 +36,7 @@ public class listManager {
     private static void updateROI(){
        
         //rewriting header
-        ROIManager.roiHeader();
+        //ROIManager.roiHeader();
 
         //rewriting all order information into the text file
         ROIManager.addInfoToTable();

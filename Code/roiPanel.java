@@ -1,9 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.File;
 
 public class roiPanel extends JPanel implements ActionListener{
     
@@ -83,6 +80,7 @@ public class roiPanel extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == display || e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
 
+            /* 
             File f = new File("output.txt");
             if(f.exists()){//verifying that output text file has been created 
 
@@ -108,6 +106,7 @@ public class roiPanel extends JPanel implements ActionListener{
             } else {//output.text has not been created yet 
                 JOptionPane.showMessageDialog(null, "Please upload files first");
             }
+            */
         }
         else if(e.getSource() == back){
             controller.getInstance().changeCard("Homescreen");

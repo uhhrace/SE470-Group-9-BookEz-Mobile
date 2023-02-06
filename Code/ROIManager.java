@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableColumn;
+
 import org.apache.pdfbox.pdmodel.PDDocument; 
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.PrintWriter;
@@ -12,7 +14,6 @@ import java.util.Collection;
 
 public class ROIManager{
 
-    public static File output;//output.text file collects all information from PDFs
     public static Integer identifyer = 1;//for vectors id number 
     private static Integer nextEnd;//used to find desired strings 
 
@@ -34,7 +35,6 @@ public class ROIManager{
         fileUpload.setMultiSelectionEnabled(true);//testing 
 
         int response = fileUpload.showOpenDialog(null);//saves users device for file selection
-        roiHeader();//writing in roi header to text file
 
         if(response == JFileChooser.APPROVE_OPTION){//make sure file selecteds path is retrieved
 
@@ -45,7 +45,7 @@ public class ROIManager{
                 readInSingleFile(file);//read in each file 
             }
 
-            totalCollection();//adding to totals 
+            //totalCollection();//adding to totals 
             addInfoToTable();//adding all collected information to output.text file
             addTotalsToTable();//sum up totals to table 
         }
@@ -79,31 +79,35 @@ public class ROIManager{
     private static void orderCollector(String s, int id){
 
         //strings to collect information
-        String orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC;
+        String orderNum;
+        Double total, shipCost, soldPrice, shipPaid, tax, profitC;
   
         nextEnd = 0;//setting int to 0 for each new file being read 
 
+
         //collecting each string segment from the files 
         orderNum = convertAndFind(s, "Order number ", nextEnd, 13);
-        total = convertAndFind(s, "$", nextEnd, 0);
+        total = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
         int afterTotal = nextEnd;//grabs totals nextEnd value to look for a dollar sign after
-        shipCost = convertAndFind(s, "Cost: ", nextEnd, 6);
-        soldPrice = convertAndFind(s, "$", nextEnd, 0);
-        shipPaid = convertAndFind(s, "$", nextEnd, 0);
-        tax = convertAndFind(s, "$",nextEnd, 0);
 
         //no "Cost: " menas that shipping was not paid for and the order had a tracking number added instead
         if(s.indexOf("Cost:") == -1){
-            shipCost = "$0.00";//set shipCost to 0
+            shipCost = 0.00;//set shipCost to 0
             nextEnd = afterTotal;//continue to search for the other values after total
-            soldPrice = convertAndFind(s, "$", nextEnd, 0);
-            shipPaid = convertAndFind(s, "$", nextEnd, 0);
-            tax = convertAndFind(s, "$",nextEnd, 0);
+            soldPrice = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
+            shipPaid = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
+            //tax = Double.parseDouble(convertAndFind(s, "$",nextEnd, 1));
+        } else {
+            shipCost = Double.parseDouble(convertAndFind(s, "Cost: ", nextEnd, 7));
+            soldPrice = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
+            shipPaid = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
         }
 
-        //if sales taxes were not collected, set tax to 0
-        if(s.indexOf("Sales tax (eBay collected)") == -1){
-            tax = "$0.00";
+         //if sales taxes were not collected, set tax to 0
+         if(s.indexOf("Sales tax (eBay collected)") == -1){
+            tax = 0.00;
+        } else {
+            tax = Double.parseDouble(convertAndFind(s, "$",nextEnd, 1));
         }
         
         //calculating profit after costs and if sales tax was collected 
@@ -118,46 +122,18 @@ public class ROIManager{
     ///////////////Writing To Txt File Functions///////////////////////////
     ///////////////////////////////////////////////////////////////////////
 
-    //wiriting in header for each column and file formatting 
-    public static void roiHeader(){
-        output = new File("output.txt");//creating output.text file 
-
-        try{
-            FileWriter writer = new FileWriter(output);//writing in file 
-
-            //header information for each column 
-            writer.write("ROI Table\n");
-            writer.write("Order Total\tSold For\tShip Charged\tShip Cost\tTaxes\tProfit\tOrder Number\t\n");
-           
-            writer.flush();
-            writer.close();//closing writer 
-            
-        } catch(java.io.IOException ex){//catching exception thrown for invalid document used
-            System.out.println("File cannot be opened: " + ex);//printing error message 
-        } 
-    }//end of ROI Header
-
     //adding each orders information into output.text file 
     protected static void addInfoToTable(){
         
-        //try adding information to file
-        try(FileWriter writer = new FileWriter("output.txt", true);
-            BufferedWriter bw = new BufferedWriter(writer);
-            PrintWriter out = new PrintWriter(bw))
-        {
-            Collection<orderObject> values = orders.values();//obtain all current orders 
+        Collection<orderObject> values = orders.values();//obtain all current orders 
 
-            //add alt their information into the output file
-            for(orderObject order : values){
-                roiPanel.t.addRow(order);
-                
-                out.println(order.getTotal() + "\t" + order.getSoldPrice() + "\t" + order.getShipPaid() + "\t" + 
-                order.getShipCost() + "\t" + order.getTax() + "\t" + order.getProfit() + "\t" + order.getOrderNum() + "\n");
-            }
+        //add alt their information into the output file
+        for(orderObject order : values){
+            roiPanel.t.addRow(order);
+            
+        }
 
-        } catch(java.io.IOException ex){//catching exception thrown for invalid document or document not existing 
-            System.out.println("File cannot be opened: " + ex);//printing error message 
-        } 
+        roiPanel.t.addTotals();
     
     }//end of creating ROI table 
 
@@ -185,6 +161,7 @@ public class ROIManager{
 
     //collects all information from pdf texts and continous to sum up each entered string 
     //utilizes boolean to determine if the total is being added or subtracted from current totals
+    /* 
     public static void totalCollection(){
 
         totals = new totalObject();//resets all fields to 0;
@@ -202,7 +179,7 @@ public class ROIManager{
             totals.setTotalProfit(order.getProfit().substring(1));
         }
     }//end of totalCollection
-
+    */
     ///////////////////////////////////////////////////////////////////////
     /////////////////////////Utility function/////////////////////////////
     ///////////////////////////////////////////////////////////////////////

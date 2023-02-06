@@ -20,8 +20,8 @@ public class sortManager{
             public int compare(orderObject o1, orderObject o2){
 
                 //remove '$' from each profit and convert the string into a double for comparision
-                Double first = Double.parseDouble(o1.getProfit().substring(1));
-                Double second = Double.parseDouble(o2.getProfit().substring(1));
+                Double first = o1.getProfit();
+                Double second = o2.getProfit();
                 if(ascending){
                     return Double.compare(second, first);
                 } else {
@@ -30,7 +30,7 @@ public class sortManager{
             }
         });
 
-        ROIManager.roiHeader();//rewriting header of the ROI table
+        //ROIManager.roiHeader();//rewriting header of the ROI table
 
         //rewriting all the information in a sorted order 
         for(orderObject order : list){
