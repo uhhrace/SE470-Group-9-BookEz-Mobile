@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableColumn;
 
 import org.apache.pdfbox.pdmodel.PDDocument; 
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -47,7 +46,7 @@ public class ROIManager{
 
             //totalCollection();//adding to totals 
             addInfoToTable();//adding all collected information to output.text file
-            addTotalsToTable();//sum up totals to table 
+            //addTotalsToTable();//sum up totals to table 
         }
     }//end of readInFiles
 
@@ -129,11 +128,11 @@ public class ROIManager{
 
         //add alt their information into the output file
         for(orderObject order : values){
-            roiPanel.t.addRow(order);
+            roiTable.returnWriter().addRow(order);
             
         }
 
-        roiPanel.t.addTotals();
+        roiTable.returnWriter().addTotals();
     
     }//end of creating ROI table 
 

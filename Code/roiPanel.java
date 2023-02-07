@@ -4,11 +4,10 @@ import javax.swing.*;
 
 public class roiPanel extends JPanel implements ActionListener{
     
-    private JButton back, display, highProfitSort, lowProfitSort;
+    private JButton back, delete, highProfitSort, lowProfitSort;
     private JLabel sortMess;
-    static JTextArea roiTable;
-
-    static tableWriter t = new tableWriter();
+    public static JTextArea roiTable;
+    private roiTable roi = new roiTable();
     
     public roiPanel(){
         
@@ -26,9 +25,9 @@ public class roiPanel extends JPanel implements ActionListener{
         back.addActionListener(this);//monitor if clicked
         back.setForeground(colorPalette.ezBlue);
 
-        display = new JButton("Display ROI Table"); 
-        display.addActionListener(this);
-        display.setForeground(colorPalette.ezBlue);
+        delete = new JButton("Delete Selected Items"); 
+        delete.addActionListener(this);
+        delete.setForeground(colorPalette.ezBlue);
 
         highProfitSort = new JButton("Highest Profit");
         highProfitSort.addActionListener(this);
@@ -47,9 +46,7 @@ public class roiPanel extends JPanel implements ActionListener{
         JScrollPane roiScroll = new JScrollPane(roiTable);
         roiScroll.setBorder(null);
 
-
-        JTable table = new JTable(t);
-        table.setPreferredScrollableViewportSize(new Dimension(700, 500));
+        JTable table = roi.getTable();
         JScrollPane tableScroll = new JScrollPane(table);
 
         //creating JLables
@@ -57,7 +54,7 @@ public class roiPanel extends JPanel implements ActionListener{
         sortMess.setForeground(colorPalette.ezBlue);
 
         //adding element into panels
-        topPanel.add(display);
+        topPanel.add(delete);
         leftPanel.add(sortMess);
         leftPanel.add(highProfitSort);
         leftPanel.add(lowProfitSort);
@@ -78,7 +75,7 @@ public class roiPanel extends JPanel implements ActionListener{
 
     //if button is clicked preform an action
     public void actionPerformed(ActionEvent e){
-        if(e.getSource() == display || e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
+        if(e.getSource() == highProfitSort || e.getSource() == lowProfitSort){
 
             /* 
             File f = new File("output.txt");
@@ -107,6 +104,9 @@ public class roiPanel extends JPanel implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Please upload files first");
             }
             */
+        }
+        else if(e.getSource() == delete){
+            roi.deleteRows();
         }
         else if(e.getSource() == back){
             controller.getInstance().changeCard("Homescreen");
