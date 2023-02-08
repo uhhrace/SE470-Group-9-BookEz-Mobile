@@ -5,12 +5,16 @@ public class pathObject {
     private int id;
     private String path;
 
-    //consturctor for object text
+    /**
+     * Consturctor for path object
+     * @param id path number in the order it was uploaded
+     * @param path path name on local device
+     */
     public pathObject(int id, String path){
 
         this.id = id;
         this.path = path;
-    }//end of pathObject constructor
+    }
 
     //setter and getter methods
     public void setID(int id){
@@ -28,6 +32,5 @@ public class pathObject {
     public String getPath(){
         return path;
     }
-
-}//end of pathObject class
+}
 

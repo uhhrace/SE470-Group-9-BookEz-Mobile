@@ -10,7 +10,7 @@ public class controller extends JPanel{
 
     //creating each classes panel to add to cards
     homePanel mainPanel;
-    photoPanel photoPanel;
+    uploadPanel photoPanel;
     roiPanel roiPanel;
 
     public controller(){
@@ -19,7 +19,7 @@ public class controller extends JPanel{
         cards = new JPanel(new CardLayout());
 
         mainPanel = new homePanel();
-        photoPanel = new photoPanel();
+        photoPanel = new uploadPanel();
         roiPanel = new roiPanel();
         
         cards.add(mainPanel, "Homescreen");
@@ -55,5 +55,4 @@ public class controller extends JPanel{
     public static controller getInstance(){
         return instance;
     }
-
-}//end of controller 
+}

@@ -100,11 +100,10 @@ public class roiTableWriter extends AbstractTableModel{
                 boolean delete = (Boolean) checked;
                 if(delete){
                     deleteRow(i);//delete the row
-                    p.deleteRow(i);//deleting the row from the path table 
+                    p.deleteRow(i);//deleting the row from the path table
                 }
             }
         }
-
         deleteRow(getRowCount() - 1);//deleting current totals row
         addTotals();//adding new totals row
 

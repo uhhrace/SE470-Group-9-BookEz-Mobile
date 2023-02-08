@@ -2,22 +2,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.pdfbox.pdmodel.PDDocument; 
 import org.apache.pdfbox.text.PDFTextStripper;
-import java.util.HashMap;
-import java.util.Collection;
 
 public class ROIManager{
 
     public static Integer identifyer = 1;//for vectors id number 
     private static Integer nextEnd;//used to find desired strings 
+    private static roiTableWriter r = roiTable.returnWriter();//creating an instance of roi table writer
 
-    //HashMaps containing each orders information and paths 
-    public static HashMap<Integer, orderObject> orders = new HashMap<Integer, orderObject>();
-    public static HashMap<Integer, pathObject> paths = new HashMap<Integer, pathObject>();
-
-    //user selecting files from device 
+    /**
+     * Reads in all files selected by the user from their local device
+     */
     public static void readInFiles(){
 
         JFileChooser fileUpload = new JFileChooser();//creating file chooser//testing 
@@ -32,32 +28,33 @@ public class ROIManager{
             File files[] = fileUpload.getSelectedFiles();//array of files that contains selected files  
 
             for(File file : files){//itterate through collected files 
-
                 readInSingleFile(file);//read in each file 
-            }
-            addInfoToTable();//adding all collected information to output.text file
-            
-        }
-    }//end of readInFiles
 
-    //reads in a file and extracts the desired information 
+            }
+            r.addTotals();//finally adding final row of column totals to the roi table 
+
+        }
+    }
+
+    /**
+     * Reads in a single file. Convers and strips the order pdf into a string, then collects all of the orders information. 
+     * Adding in the information into the roi table as it is collected 
+     * 
+     * @param file Order reciept pdf to be processed 
+     */
     private static void readInSingleFile(File file){
         try{
-            //getting path name and convering into a displayable method for user 
             String path = file.getAbsolutePath() + "\n";//collect path 
             int pathSegment = path.indexOf("Sales");//finds "Sales" segment of each order path
-            path = identifyer + ": " + path.substring(pathSegment);//collects order path from "Sales" on
+            path = path.substring(pathSegment);//collects order path from "Sales" on
 
-            pathTable.returnWriter().addRow(new pathObject(identifyer, path));
-
-            //paths.put(identifyer, new pathObject(identifyer, path));//adding paths to hash map
-            
+            pathTable.returnWriter().addRow(new pathObject(identifyer, path));//adding the row into the path table
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
             PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
             PDFTextStripper pdfTextStripper = new PDFTextStripper();//obtain text
             String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
 
-            orderCollector(docText, identifyer);//getting info from each pdf and adding to output.text file
+            orderCollector(docText);//getting info from each pdf and adding to output.text file
 
             pdfDocument.close();//closing document
             fis.close();//closing file input stream
@@ -65,10 +62,13 @@ public class ROIManager{
         } catch(java.io.IOException ex){//catching exception thrown for invalid document inputs
             System.out.println("File cannot be opened: " + ex);//printing error message 
         } 
-    }//end of readInSingleFile function
+    }
 
-    //used to extract the desired information from an ebay order reciept pdf and add the information into an order object in a hash map
-    private static void orderCollector(String s, int id){
+    /**
+     * Colecting all of the information from an order reciept
+     * @param doc the string of order information
+     */
+    private static void orderCollector(String doc){
 
         //strings to collect information
         String orderNum;
@@ -76,56 +76,48 @@ public class ROIManager{
         nextEnd = 0;//setting int to 0 for each new file being read 
 
         //collecting each string segment from the files 
-        orderNum = convertAndFind(s, "Order number ", nextEnd, 13);
-        total = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
+        orderNum = convertAndFind(doc, "Order number ", nextEnd, 13);
+        total = Double.parseDouble(convertAndFind(doc, "$", nextEnd, 1));
         int afterTotal = nextEnd;//grabs totals nextEnd value to look for a dollar sign after
 
         //no "Cost: " menas that shipping was not paid for and the order had a tracking number added instead
-        if(s.indexOf("Cost:") == -1){
+        if(doc.indexOf("Cost:") == -1){
             shipCost = 0.00;//set shipCost to 0
             nextEnd = afterTotal;//continue to search for the other values after total
-            soldPrice = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
-            shipPaid = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
-            //tax = Double.parseDouble(convertAndFind(s, "$",nextEnd, 1));
+            soldPrice = Double.parseDouble(convertAndFind(doc, "$", nextEnd, 1));
+            shipPaid = Double.parseDouble(convertAndFind(doc, "$", nextEnd, 1));
+
         } else {
-            shipCost = Double.parseDouble(convertAndFind(s, "Cost: ", nextEnd, 7));
-            soldPrice = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
-            shipPaid = Double.parseDouble(convertAndFind(s, "$", nextEnd, 1));
+            shipCost = Double.parseDouble(convertAndFind(doc, "Cost: ", nextEnd, 7));
+            soldPrice = Double.parseDouble(convertAndFind(doc, "$", nextEnd, 1));
+            shipPaid = Double.parseDouble(convertAndFind(doc, "$", nextEnd, 1));
+
         }
 
          //if sales taxes were not collected, set tax to 0
-         if(s.indexOf("Sales tax (eBay collected)") == -1){
+         if(doc.indexOf("Sales tax (eBay collected)") == -1){
             tax = 0.00;
+
         } else {
-            tax = Double.parseDouble(convertAndFind(s, "$",nextEnd, 1));
+            tax = Double.parseDouble(convertAndFind(doc, "$",nextEnd, 1));
         }
         
         //calculating profit after costs and if sales tax was collected 
-        profitC = utility.profitCalc(total, shipCost, tax);      
+        profitC = profitCalc(total, shipCost, tax);      
 
-        //adding extracted info into a orderObject
-        orders.put(id, new orderObject(id, orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC));
+        //adding extracted info into an orderObject and adding that information into the roi table
+        r.addRow(new orderObject(orderNum, total, shipCost, soldPrice, shipPaid, tax, profitC));
 
-    }//end of orderCollector
+    }
 
-    //adding each orders information into output.text file 
-    protected static void addInfoToTable(){
-        Collection<orderObject> values = orders.values();//obtain all current orders 
-
-        //add alt their information into the output file
-        for(orderObject order : values){
-            roiTable.returnWriter().addRow(order);
-            
-        }
-        roiTable.returnWriter().addTotals();
-    
-    }//end of creating ROI table 
-
-    ///////////////////////////////////////////////////////////////////////
-    /////////////////////////Utility function/////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-
-    //finds a string segment and runs till the end of the line
+    /**
+     * Converting and finding a specific segment of the uploaded pdf of an order reciept
+     * @param docText all order information in string format 
+     * @param id what is to be searched for 
+     * @param idInt starting from 
+     * @param mod should the string be moddified to be smaller 
+     * @return string result
+     */
     private static String convertAndFind(String docText, String id, int idInt, int mod){
 
         String result;//result to be returned 
@@ -138,6 +130,20 @@ public class ROIManager{
         nextEnd = endResult;//setting to the end of result in order to continue to look through the text
         return result;//returning result 
 
-    }//end of convert and find 
+    } 
 
-}//end of class
+    /**
+     * Calculates profit from entered in double variables
+     * @param total total order sold for
+     * @param shipCost total shipping cost
+     * @param tax tax paid
+     * @return profit 
+     */
+    public static Double profitCalc(Double total, Double shipCost, Double tax){
+        double profit = 0.0;//used for calculations
+        profit = total - shipCost - tax;//calculating profit 
+        profit = (double) Math.round(profit * 1000) / 1000.0;//rounding off two decimal places
+        return profit;//returning profit obtained 
+
+    }
+}

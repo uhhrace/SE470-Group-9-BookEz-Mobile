@@ -1,13 +1,20 @@
 public class orderObject {
 
-    private int id;
     private String orderNum;
     Double total, shipCost, soldPrice, shipPaid, tax, profit;
 
-    //consturctor for object text
-    public orderObject(int id, String orderNum, Double total, Double shipCost, Double soldPrice, Double shipPaid, Double tax, Double profit){
-        
-        this.id = id;
+    /**
+     * Constructor for order object
+     * @param orderNum order number
+     * @param total total sold price
+     * @param shipCost shipping cost 
+     * @param soldPrice item sold price 
+     * @param shipPaid shipping paid by buyer
+     * @param tax taxes paid 
+     * @param profit profit made
+     */
+    public orderObject(String orderNum, Double total, Double shipCost, Double soldPrice, Double shipPaid, Double tax, Double profit){
+  
         this.orderNum = orderNum;
         this.total = total;
         this.shipCost = shipCost;
@@ -15,17 +22,9 @@ public class orderObject {
         this.shipPaid = shipPaid;
         this.tax = tax;
         this.profit = profit;
-    }//end of orderObject constructor
+    }
 
     //setter and getter methods
-    public void setID(int id){
-        this.id = id;
-    }
-
-    public int getID(){
-        return id;
-    }
-
     public void setOrderNum(String orderNum){
         this.orderNum = orderNum;
     }
@@ -81,5 +80,4 @@ public class orderObject {
     public Double getProfit(){
         return profit;
     }
-
-}//end of orderObject class
+}

@@ -38,14 +38,13 @@ public class homePanel extends JPanel implements ActionListener{
         //Creating Lables
         appName = new JLabel("Welcome To BookEz");
         appName.setFont(new Font("Arial", Font.BOLD, 40));//resizing text within label
-        appName.setForeground(Color.white);
+        appName.setForeground(colorPalette.background);
 
         option = new JLabel("Please choose an option");
         option.setFont(new Font("Arial", Font.PLAIN, 15));//resizing text within label
-        option.setForeground(Color.white);
+        option.setForeground(colorPalette.background);
 
         tab = new JLabel("    ");
-
         blank = new JLabel("");
 
         //Adding elements to panels 
@@ -85,9 +84,11 @@ public class homePanel extends JPanel implements ActionListener{
         setVisible(true);
         setSize(500, 500);
 
-    }//end of homePanel
+    }
  
-    //if button is clicked preform an action
+    /**
+     * Preforming an action for every event
+     */
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == photo){//if user wants to upload photos, move to photo panel
             controller.getInstance().changeCard("Upload Photos");
@@ -105,12 +106,11 @@ public class homePanel extends JPanel implements ActionListener{
                 //listManager.outputList.delete();
                 //photoPanel.fileList.setText("Empty");
 
-                ROIManager.paths.clear();//clearing the vector 
+                //ROIManager.paths.clear();//clearing the vector 
             }
             System.exit(0);//ends program 
 
         }
 
-    }//end of action preformed 
-
-}//end of class 
+    }
+}

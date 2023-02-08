@@ -2,13 +2,13 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class photoPanel extends JPanel implements ActionListener{
+public class uploadPanel extends JPanel implements ActionListener{
     
     private JButton back, upload, delete, clear;
     private JLabel name,prompt, blank, listID;
     private pathTable pathTable = new pathTable();
 
-    public photoPanel(){
+    public uploadPanel(){
 
         //creating JPanels  
         JPanel main = new JPanel();
@@ -105,7 +105,9 @@ public class photoPanel extends JPanel implements ActionListener{
 
     }//end of photoPanel
 
-    //if button is clicked, move to a different panel/preform actions
+    /**
+     * Preforming an action for every event
+     */
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == upload){//uploading order reciepts
             //read in all selected files 
@@ -135,6 +137,6 @@ public class photoPanel extends JPanel implements ActionListener{
 
         }
 
-    }//end of actionPreformed 
+    }
 
-}//end of class
+}

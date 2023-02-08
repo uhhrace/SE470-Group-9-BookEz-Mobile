@@ -64,7 +64,9 @@ public class roiPanel extends JPanel implements ActionListener{
         setSize(500, 500);
     }
 
-    //if button is clicked preform an action
+    /**
+     * Preforming an action for every event
+     */
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == highProfitSort){
             roi.sortTable(6, true);
@@ -78,7 +80,7 @@ public class roiPanel extends JPanel implements ActionListener{
         else if(e.getSource() == back){
             controller.getInstance().changeCard("Homescreen");
         }
-    }//end of action preformed 
+    }
 
-}//end of roi panel
+}
 
