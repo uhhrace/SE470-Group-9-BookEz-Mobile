@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import javax.swing.table.AbstractTableModel;
 
 public class tableWriter extends AbstractTableModel{
@@ -122,6 +123,57 @@ public class tableWriter extends AbstractTableModel{
 
         data = newData;//set as data
         fireTableDataChanged();//update table
+    }
+
+    /**
+     * Will sort the table based on the entered in colum and will be sorted in ascending or descending order based on the boolean
+     * @param columnIndex column to be sorted
+     * @param ascending method of sort 
+     */
+    public void sortTable(int columnIndex, boolean ascending) {
+
+        int rowCount = data.length;//obtaining current amount of rows 
+        Integer[] sortIndices = new Integer[rowCount - 1];//creating an array to store values of said column
+        int sortInd = 0;//finding out the length of all rows minus the final one 
+
+        for (int i = 0; i < rowCount; i++) {//looping through the rows 
+            if(i != rowCount - 1){//if its not the last one 
+                sortIndices[sortInd++] = i;//add it to te array 
+            }
+        }
+
+        //sorting the array of row values 
+        Arrays.sort(sortIndices, (a, b) -> {
+            Object valueA = data[a][columnIndex];
+            Object valueB = data[b][columnIndex];
+            //checking if the values are doubles and compare them if they are
+            if (valueA instanceof Double && valueB instanceof Double) {
+                if(ascending){//sorting in ascending order
+                    return Double.compare((Double) valueA, (Double) valueB);
+                } else {//sorting in descending order
+                    return ((Double) valueB).compareTo((Double) valueA);
+                }
+            } else {//returning 0 if the values are not doubles
+                return 0;
+            }
+        });
+
+        //making object with amount of rows to insert sorted array
+        Object[][] sortedData = new Object[rowCount][];
+        int sortedInd = 0;//initalizing a sorted index 
+
+        //itterating through all rows
+        for (int i = 0; i < rowCount; i++) {
+            if(i != rowCount - 1){//if not last row then add to data
+                sortedData[sortedInd++] = data[sortIndices[i]];
+            } else {//if last row then add in regularly 
+                sortedData[sortedInd++] = data[i];
+            }
+            
+        }
+
+        data = sortedData;//set data to sorted data 
+        fireTableDataChanged();//update table 
     }
 
     /**

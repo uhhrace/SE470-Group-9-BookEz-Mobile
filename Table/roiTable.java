@@ -52,4 +52,15 @@ public class roiTable {
     public void deleteRows(){
         t.deletedSelectedRows();//making tableWriter function call
     }
+    
+    /**
+     * Will sort the table based on the specified column and if it is ascending or descending 
+     * @param col column whos info is to be sorted
+     * @param ascending method of sorting 
+     */
+    public void sortTable(int col, boolean ascending){
+        if(col > 0 && col < finalTableValues.checkCol){//ensuring that the column is valid to be sorted
+            t.sortTable(col, ascending);//calling function from table writer 
+        }
+    }
 }
