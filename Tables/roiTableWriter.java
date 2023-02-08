@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import javax.swing.table.AbstractTableModel;
 
-public class tableWriter extends AbstractTableModel{
+public class roiTableWriter extends AbstractTableModel{
     
     private final String[] columnNames = {"Order Number", "Order Total", "Item Sold Price", 
     "Charged Shipping", "Shipping Paid", "Taxes", "Profit", "Check Box"};
@@ -90,13 +90,17 @@ public class tableWriter extends AbstractTableModel{
     /**
      * Deletes all selected rows from the check box column
      */
-    public void deletedSelectedRows(){
+    public void deleteSelectedRows(){
+
+        pathTableWriter p = pathTable.returnWriter();//creating a path table writer variable 
+
         for(int i = getRowCount() - 1; i >= 0; i--){//itterates through all rows in table
-            Object checked = getValueAt(i, finalTableValues.checkCol);//obtains boolean value from check box column
+            Object checked = getValueAt(i, finalTableValues.roiCheckCol);//obtains boolean value from check box column
             if(checked instanceof Boolean){//if checked for deletion
                 boolean delete = (Boolean) checked;
                 if(delete){
                     deleteRow(i);//delete the row
+                    p.deleteRow(i);//deleting the row from the path table 
                 }
             }
         }

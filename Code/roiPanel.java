@@ -4,16 +4,19 @@ import javax.swing.*;
 
 public class roiPanel extends JPanel implements ActionListener{
     
-    private JButton back, delete, highProfitSort, lowProfitSort;
+    private JButton back, highProfitSort, lowProfitSort;
+    public static JButton delete;
     private JLabel sortMess;
-    public static JTextArea roiTable;
     private roiTable roi = new roiTable();
     
     public roiPanel(){
         
         setLayout(new BorderLayout());
 
-        //creating panels
+        //creating JTables
+        JTable table = roi.getTable();//obtaining the abstract table
+        JScrollPane tableScroll = new JScrollPane(table);//adding jscrollpane
+
         JPanel topPanel = new JPanel();
         JPanel leftPanel = new JPanel();
         leftPanel.setPreferredSize(new Dimension(115, 500));
@@ -28,6 +31,7 @@ public class roiPanel extends JPanel implements ActionListener{
         delete = new JButton("Delete Selected Items"); 
         delete.addActionListener(this);
         delete.setForeground(colorPalette.ezBlue);
+        delete.setEnabled(false);
 
         highProfitSort = new JButton("Highest Profit");
         highProfitSort.addActionListener(this);
@@ -36,18 +40,6 @@ public class roiPanel extends JPanel implements ActionListener{
         lowProfitSort = new JButton("Lowest Profit");
         lowProfitSort.addActionListener(this);
         lowProfitSort.setForeground(colorPalette.ezBlue);
-
-        //creating JTextAreas
-        roiTable = new JTextArea("\t      Click on Display ROI Table to view table or upload files to generate one");
-        roiTable.setPreferredSize(new Dimension(700, 720));
-        roiTable.setEditable(false);//set so the user cannot type into area
-
-        //creating JScrollPane
-        JScrollPane roiScroll = new JScrollPane(roiTable);
-        roiScroll.setBorder(null);
-
-        JTable table = roi.getTable();
-        JScrollPane tableScroll = new JScrollPane(table);
 
         //creating JLables
         sortMess = new JLabel("Sort By: ");
@@ -58,7 +50,6 @@ public class roiPanel extends JPanel implements ActionListener{
         leftPanel.add(sortMess);
         leftPanel.add(highProfitSort);
         leftPanel.add(lowProfitSort);
-        //middlePanel.add(roiScroll); 
         middlePanel.add(tableScroll); 
         bottomPanel.add(back); 
 

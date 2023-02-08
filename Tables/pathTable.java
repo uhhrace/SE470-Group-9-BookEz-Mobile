@@ -2,18 +2,18 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class roiTable {
-    private static tableWriter t = new tableWriter();//creating an instance of table writer
+public class pathTable {
+    private static pathTableWriter p = new pathTableWriter();//creating an instance of table writer
 
     /**
      * Creating the table and storing it within a JTable to be returned and used within the panel display
      * @return
      */
     public JTable getTable(){
-        JTable table = new JTable(t);//creating table with tablewriter 
+        JTable table = new JTable(p);//creating table with tablewriter 
 
-        table.setPreferredScrollableViewportSize(new Dimension(800, 500));//setting tables size 
-        table.getColumnModel().getColumn(finalTableValues.checkCol).setCellRenderer(new checkBox());//rendering checkboxes 
+        table.setPreferredScrollableViewportSize(new Dimension(400, 500));//setting tables size 
+        table.getColumnModel().getColumn(finalTableValues.pathCheckCol).setCellRenderer(new pathCheckBox());//rendering checkboxes 
 
         //adding mouse listener for each check box 
         table.addMouseListener(new MouseAdapter() {
@@ -22,12 +22,12 @@ public class roiTable {
                 int row = table.rowAtPoint(e.getPoint());
                 int col = table.columnAtPoint(e.getPoint());
             
-                if (col == finalTableValues.checkCol) {//if column is the check box column 
+                if (col == finalTableValues.pathCheckCol) {//if column is the check box column 
                     Object value = table.getValueAt(row, col);//obtain the current value 
 
                     if(value instanceof Boolean){//if it is a boolean
                         Boolean checked = (Boolean) value;//obtain boolean value
-                        t.setValueAt(!checked, row, col);//setting the value to the opposite of what it currently is
+                        p.setValueAt(!checked, row, col);//setting the value to the opposite of what it currently is
                         table.repaint();//updating check box render 
                     }
                 }
@@ -41,26 +41,23 @@ public class roiTable {
      * Returning the table writer instance used for the abstract table
      * @return returning table writer 
      */
-    public static tableWriter returnWriter(){
-        return t;
-
+    public static pathTableWriter returnWriter(){
+        return p;
     }
 
     /**
      * Deletes selected rows from table
      */
     public void deleteRows(){
-        t.deletedSelectedRows();//making tableWriter function call
+        p.deleteSelectedRows();//making tableWriter function call
     }
-    
+ 
     /**
-     * Will sort the table based on the specified column and if it is ascending or descending 
-     * @param col column whos info is to be sorted
-     * @param ascending method of sorting 
+     * Will return the amount of rows that are in the path table 
+     * @return amount of rows 
      */
-    public void sortTable(int col, boolean ascending){
-        if(col > 0 && col < finalTableValues.checkCol){//ensuring that the column is valid to be sorted
-            t.sortTable(col, ascending);//calling function from table writer 
-        }
+    public int returnRowCount(){
+        return p.getRowCount();
     }
+
 }

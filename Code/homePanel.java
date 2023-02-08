@@ -99,17 +99,11 @@ public class homePanel extends JPanel implements ActionListener{
         else if(e.getSource() == exit){
 
             //deleting output.text files only if they have something in them ie were created 
-            File out = new File("output.txt");
             File path = new File("pathList.txt");
-            if(out.length() > 0){
-                //ROIManager.output.delete();
-                roiPanel.roiTable.setText("Empty");
-
-                ROIManager.orders.clear();//clearing the hashmap 
-            } 
+    
             if(path.length() > 0){
-                listManager.outputList.delete();
-                photoPanel.fileList.setText("Empty");
+                //listManager.outputList.delete();
+                //photoPanel.fileList.setText("Empty");
 
                 ROIManager.paths.clear();//clearing the vector 
             }

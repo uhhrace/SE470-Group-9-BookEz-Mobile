@@ -1,13 +1,10 @@
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument; 
 import org.apache.pdfbox.text.PDFTextStripper;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Collection;
 
@@ -19,10 +16,6 @@ public class ROIManager{
     //HashMaps containing each orders information and paths 
     public static HashMap<Integer, orderObject> orders = new HashMap<Integer, orderObject>();
     public static HashMap<Integer, pathObject> paths = new HashMap<Integer, pathObject>();
-
-    //objects contains the totals from each orders information
-    private static totalObject totals = new totalObject(0.00, 0.00, 0.00,
-    0.00, 0.00, 0.00);
 
     //user selecting files from device 
     public static void readInFiles(){
@@ -36,17 +29,14 @@ public class ROIManager{
         int response = fileUpload.showOpenDialog(null);//saves users device for file selection
 
         if(response == JFileChooser.APPROVE_OPTION){//make sure file selecteds path is retrieved
-
             File files[] = fileUpload.getSelectedFiles();//array of files that contains selected files  
 
             for(File file : files){//itterate through collected files 
 
                 readInSingleFile(file);//read in each file 
             }
-
-            //totalCollection();//adding to totals 
             addInfoToTable();//adding all collected information to output.text file
-            //addTotalsToTable();//sum up totals to table 
+            
         }
     }//end of readInFiles
 
@@ -57,7 +47,10 @@ public class ROIManager{
             String path = file.getAbsolutePath() + "\n";//collect path 
             int pathSegment = path.indexOf("Sales");//finds "Sales" segment of each order path
             path = identifyer + ": " + path.substring(pathSegment);//collects order path from "Sales" on
-            paths.put(identifyer, new pathObject(identifyer, path));//adding paths to hash map
+
+            pathTable.returnWriter().addRow(new pathObject(identifyer, path));
+
+            //paths.put(identifyer, new pathObject(identifyer, path));//adding paths to hash map
             
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
             PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
@@ -80,9 +73,7 @@ public class ROIManager{
         //strings to collect information
         String orderNum;
         Double total, shipCost, soldPrice, shipPaid, tax, profitC;
-  
         nextEnd = 0;//setting int to 0 for each new file being read 
-
 
         //collecting each string segment from the files 
         orderNum = convertAndFind(s, "Order number ", nextEnd, 13);
@@ -117,13 +108,8 @@ public class ROIManager{
 
     }//end of orderCollector
 
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////Writing To Txt File Functions///////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-
     //adding each orders information into output.text file 
     protected static void addInfoToTable(){
-        
         Collection<orderObject> values = orders.values();//obtain all current orders 
 
         //add alt their information into the output file
@@ -131,54 +117,10 @@ public class ROIManager{
             roiTable.returnWriter().addRow(order);
             
         }
-
         roiTable.returnWriter().addTotals();
     
     }//end of creating ROI table 
 
-    //adds totals of each row to the end of the file
-    public static void addTotalsToTable(){
-        //try adding information to file
-        try(FileWriter writer = new FileWriter("output.txt", true);
-            BufferedWriter bw = new BufferedWriter(writer);
-            PrintWriter out = new PrintWriter(bw))
-        {
-            //adding in the information to file
-            out.println("---------------------------------------------------------------------------------------");
-            out.println("Totals from each row\n");
-            out.println("$" + totals.getFinalTotal() + "\t$" + totals.getTotalSoldPrice() + "\t$" + totals.getTotalShipPaid() + "\t$" + 
-            totals.getTotalShipCost() + "\t$" + totals.getTotalTax() + "\t$" + totals.getTotalProfit() + "\t" + "N/A");
-            
-        } catch(java.io.IOException ex){//catching exception thrown for invalid document or document not existing 
-            System.out.println("File cannot be opened: " + ex);//printing error message 
-        }
-    }//end of add totals to table
-
-    ///////////////////////////////////////////////////////////////////////
-    /////////////////Total Collection Function////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-
-    //collects all information from pdf texts and continous to sum up each entered string 
-    //utilizes boolean to determine if the total is being added or subtracted from current totals
-    /* 
-    public static void totalCollection(){
-
-        totals = new totalObject();//resets all fields to 0;
-
-        Collection<orderObject> values = orders.values();
-
-        for(orderObject order : values){
-
-            //adding or deleting from current total collected
-            totals.setFinalTotal(order.getTotal().substring(1));
-            totals.setTotalShipCost(order.getShipCost().substring(1));
-            totals.setTotalSoldPrice(order.getSoldPrice().substring(1));
-            totals.setTotalShipPaid(order.getShipPaid().substring(1));
-            totals.setTotalTax(order.getTax().substring(1));
-            totals.setTotalProfit(order.getProfit().substring(1));
-        }
-    }//end of totalCollection
-    */
     ///////////////////////////////////////////////////////////////////////
     /////////////////////////Utility function/////////////////////////////
     ///////////////////////////////////////////////////////////////////////
