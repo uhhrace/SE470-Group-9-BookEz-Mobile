@@ -11,7 +11,6 @@ public class homePanel extends JPanel{
         //side panel containing all the icons for the menu
         sidePanel = new JPanel();
         sidePanel = sideMenu.getSideMenu();
-        
 
         //top panel, color of the background
         middleTop1 = new JPanel();
@@ -57,12 +56,12 @@ public class homePanel extends JPanel{
 
         //topSpace panel 
         topSpace = new JPanel();
-        topSpace.setPreferredSize(new Dimension(1000, 50));
+        topSpace.setPreferredSize(new Dimension(1000, 25));
         topSpace.setBackground(colorPalette.background);
         
         //message panel
         message = new JPanel();
-        message.setPreferredSize(new Dimension(350, 150));
+        message.setPreferredSize(new Dimension(350, 50));
         message.setBackground(colorPalette.background);
         //adding elements to message panel
         messageText = new JLabel("Bookkeeping made easy");
@@ -73,10 +72,10 @@ public class homePanel extends JPanel{
 
         //message panel
         logout = new JPanel();
-        logout.setPreferredSize(new Dimension(180, 150));
+        logout.setPreferredSize(new Dimension(180, 50));
         logout.setBackground(colorPalette.background);
         //adding elements to message panel
-        logoutLabel = new JLabel(new ImageIcon("Icons/icons8-logout-rounded-32.png"));
+        logoutLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-logout-rounded-32.png"));
         logoutText = new JLabel("Logout");
         logoutText.setFont(new Font("Arial", Font.PLAIN, 30));//resizing text within label
         logoutText.setForeground(colorPalette.light);
@@ -103,10 +102,73 @@ public class homePanel extends JPanel{
 
     private void middleMiddle(JPanel middleTop2){
 
+        middleTop2.setLayout(new BorderLayout());
+
+        JPanel welcome, topSpace;
+        JLabel welcomeText;
+        
+        //topSpace panel
+        topSpace = new JPanel();
+        topSpace.setBackground(colorPalette.med);
+        topSpace.setPreferredSize(new Dimension(850, 30));
+        
+        //welcome panel
+        welcome = new JPanel();
+        welcome.setBackground(colorPalette.med);
+        welcome.setPreferredSize(new Dimension(200, 50));
+        //adding elements to panel
+        welcomeText = new JLabel("Welcome!");
+        welcomeText.setFont(new Font("Arial", Font.PLAIN, 40));//resizing text within label
+        welcomeText.setForeground(colorPalette.light);
+        //adding elements to welcome panel
+        welcome.add(welcomeText);
+
+        //adding panels into the main panel 
+        middleTop2.add(topSpace, BorderLayout.NORTH);
+        middleTop2.add(welcome, BorderLayout.WEST);
+
     }
 
     private void bottomMiddle(JPanel middlePanel){
 
+        middlePanel.setLayout(new GridLayout(2, 2, 10, 10));
+
+        //Creating inner panels 
+        JPanel topLeft, topRight, bottomLeft, bottomRight;
+        JLabel topRightImage, exportText;
+
+        topLeft = new JPanel();
+        topLeft.setBackground(Color.RED);
+        topLeft.setPreferredSize(new Dimension(350, 350));
+
+        //topRight panel 
+        topRight = new JPanel();
+        topRight.setBackground(colorPalette.background);
+        topRight.setPreferredSize(new Dimension(350, 350));
+        //adding elements to panel 
+        topRightImage = new JLabel(new ImageIcon("UI Formatting/Images/Data extraction-pana.png"));
+        //adding elements to topRight panel 
+        topRight.add(topRightImage);
+
+        //bottomLeft panel
+        bottomLeft = new JPanel();
+        bottomLeft.setBackground(colorPalette.background);
+        bottomLeft.setPreferredSize(new Dimension(350, 350));
+        //adding elements to the panel
+        exportText = new JLabel("Exported Files");
+
+        //adding elements to the bottomLeft panel
+        bottomLeft.add(exportText);
+        
+        bottomRight = new JPanel();
+        bottomRight.setBackground(Color.BLUE);
+        bottomRight.setPreferredSize(new Dimension(350, 350));
+
+        //adding panels into the main panel
+        middlePanel.add(topLeft);
+        middlePanel.add(topRight);
+        middlePanel.add(bottomLeft);
+        middlePanel.add(bottomRight);
 
     }
  
