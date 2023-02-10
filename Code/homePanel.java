@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class homePanel extends JPanel implements ActionListener{
     
-    private JButton photo, roi, exit;
+    private JButton photo, roi, settings, exit;
     private JLabel appName, blank, option, tab;
 
     public homePanel(){
@@ -30,6 +30,11 @@ public class homePanel extends JPanel implements ActionListener{
         roi.addActionListener(this);
         roi.setPreferredSize(new Dimension(150, 35));
         roi.setForeground(colorPalette.ezBlue);
+
+        settings = new JButton("Settings");
+        settings.addActionListener(this);
+        settings.setPreferredSize(new Dimension(150, 35));
+        settings.setForeground(colorPalette.ezBlue);
 
         exit = new JButton("Exit Application"); 
         exit.addActionListener(this);
@@ -64,6 +69,7 @@ public class homePanel extends JPanel implements ActionListener{
         middle.add(tab);
         middle.add(roi); 
 
+        button.add(settings);
         button.add(exit);
 
         space2.add(blank);
@@ -96,6 +102,9 @@ public class homePanel extends JPanel implements ActionListener{
         }
         else if(e.getSource() == roi){
             controller.getInstance().changeCard("View ROI Table");
+        }
+        else if (e.getSource() == settings){
+            controller.getInstance().changeCard("Settings");
         }
         else if(e.getSource() == exit){
 

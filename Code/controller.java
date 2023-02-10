@@ -12,6 +12,7 @@ public class controller extends JPanel{
     homePanel mainPanel;
     uploadPanel photoPanel;
     roiPanel roiPanel;
+    settingsPanel settingsPanel;
 
     public controller(){
         setLayout(new BorderLayout());
@@ -21,10 +22,12 @@ public class controller extends JPanel{
         mainPanel = new homePanel();
         photoPanel = new uploadPanel();
         roiPanel = new roiPanel();
+        settingsPanel = new settingsPanel();
         
         cards.add(mainPanel, "Homescreen");
         cards.add(photoPanel, "Upload Photos");
         cards.add(roiPanel, "View ROI Table");
+        cards.add(settingsPanel, "Settings");
 
         add(cards);
         setVisible(true);
@@ -40,7 +43,7 @@ public class controller extends JPanel{
         frame.getContentPane().add(instance);
         frame.setSize(950, 950);
         frame.setVisible(true);
-    }//end of create and display 
+    }
 
     public static void main(String[] args){
         createAndDisplay();

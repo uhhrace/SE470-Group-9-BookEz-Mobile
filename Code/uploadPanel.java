@@ -26,7 +26,7 @@ public class uploadPanel extends JPanel implements ActionListener{
         back.addActionListener(this);//monitor if clicked 
         back.setForeground(colorPalette.ezBlue);
  
-        upload = new JButton("Select Files");
+        upload = new JButton("Upload Files");
         upload.addActionListener(this);
         upload.setForeground(colorPalette.ezBlue);
 
