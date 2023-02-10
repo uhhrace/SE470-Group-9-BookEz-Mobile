@@ -1,125 +1,113 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-
 import javax.swing.*;
 
-public class homePanel extends JPanel implements ActionListener{
+public class homePanel extends JPanel{
     
-    private JButton photo, roi, settings, exit;
-    private JLabel appName, blank, option, tab;
+    private JPanel sidePanel, middleTop1, middleTop2, middlePanel;
 
     public homePanel(){
 
-        //Creating Panels
-        JPanel main = new JPanel();
-        JPanel prompt = new JPanel();
-        JPanel space = new JPanel();
-        JPanel space2 = new JPanel();
-        JPanel title = new JPanel();
-        JPanel middle = new JPanel();
-        JPanel button = new JPanel();
+        //side panel containing all the icons for the menu
+        sidePanel = new JPanel();
+        sidePanel = sideMenu.getSideMenu();
+        
 
-        //Creating buttoms
-        photo = new JButton("Upload Images");//creating uploading photos button 
-        photo.addActionListener(this);//monitor if clicked 
-        photo.setPreferredSize(new Dimension(150, 35));
-        photo.setForeground(colorPalette.ezBlue);
+        //top panel, color of the background
+        middleTop1 = new JPanel();
+        middleTop1.setPreferredSize(new Dimension(800, 100));
+        middleTop1.setBackground(colorPalette.background);
+        topMiddle(middleTop1);
 
-        roi = new JButton("View ROI Table");
-        roi.addActionListener(this);
-        roi.setPreferredSize(new Dimension(150, 35));
-        roi.setForeground(colorPalette.ezBlue);
+        //next panel containing the medium color 
+        middleTop2 = new JPanel();
+        middleTop2.setPreferredSize(new Dimension(850, 100));
+        middleTop2.setBackground(colorPalette.med);
+        middleMiddle(middleTop2);
 
-        settings = new JButton("Settings");
-        settings.addActionListener(this);
-        settings.setPreferredSize(new Dimension(150, 35));
-        settings.setForeground(colorPalette.ezBlue);
+        //middle panel containing most of the content 
+        middlePanel = new JPanel();
+        middlePanel.setPreferredSize(new Dimension(850, 1000));
+        middlePanel.setBackground(colorPalette.background);
+        bottomMiddle(middlePanel);
 
-        exit = new JButton("Exit Application"); 
-        exit.addActionListener(this);
-        exit.setForeground(colorPalette.ezBlue);
+        //setting the panels layout to border layout
+        setLayout(new BorderLayout());
 
-        //Creating Lables
-        appName = new JLabel("Welcome To BookEz");
-        appName.setFont(new Font("Arial", Font.BOLD, 40));//resizing text within label
-        appName.setForeground(colorPalette.background);
+        //creatting a wrapper to layer the middle panels 
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
 
-        option = new JLabel("Please choose an option");
-        option.setFont(new Font("Arial", Font.PLAIN, 15));//resizing text within label
-        option.setForeground(colorPalette.background);
+        //adding the middle panels 
+        wrapperPanel.add(middleTop1);
+        wrapperPanel.add(middleTop2);
+        wrapperPanel.add(middlePanel);
 
-        tab = new JLabel("    ");
-        blank = new JLabel("");
+        //adding panels to format the main panel
+        add(wrapperPanel, BorderLayout.CENTER);
+        add(sidePanel, BorderLayout.WEST);
+    }
 
-        //Adding elements to panels 
-        space.add(blank);
-        space.setPreferredSize(new Dimension(850, 15));
-        space.setBackground(colorPalette.ezBlue);
+    private void topMiddle(JPanel middleTop1){
 
-        title.add(appName);
-        title.setPreferredSize(new Dimension(850, 65));
-        title.setBackground(colorPalette.ezBlue);
+        middleTop1.setLayout(new BorderLayout());
 
-        prompt.add(option);
-        prompt.setPreferredSize(new Dimension(850, 30));
-        prompt.setBackground(colorPalette.ezBlue);
+        JPanel topSpace, message, logout;
+        JLabel messageText, logoutText, logoutLabel;
 
-        middle.add(photo);
-        middle.add(tab);
-        middle.add(roi); 
+        //topSpace panel 
+        topSpace = new JPanel();
+        topSpace.setPreferredSize(new Dimension(1000, 50));
+        topSpace.setBackground(colorPalette.background);
+        
+        //message panel
+        message = new JPanel();
+        message.setPreferredSize(new Dimension(350, 150));
+        message.setBackground(colorPalette.background);
+        //adding elements to message panel
+        messageText = new JLabel("Bookkeeping made easy");
+        messageText.setFont(new Font("Arial", Font.PLAIN, 30));//resizing text within label
+        messageText.setForeground(colorPalette.light);
+        //adding elements to appName panel
+        message.add(messageText);
 
-        button.add(settings);
-        button.add(exit);
+        //message panel
+        logout = new JPanel();
+        logout.setPreferredSize(new Dimension(180, 150));
+        logout.setBackground(colorPalette.background);
+        //adding elements to message panel
+        logoutLabel = new JLabel(new ImageIcon("Icons/icons8-logout-rounded-32.png"));
+        logoutText = new JLabel("Logout");
+        logoutText.setFont(new Font("Arial", Font.PLAIN, 30));//resizing text within label
+        logoutText.setForeground(colorPalette.light);
+        //adding mouse listeners to the jlabels 
+        logoutLabel.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+                System.exit(0);//ends program
+            }
+        });
+        logoutText.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+                System.exit(0);//ends program
+            }
+        });
+        //adding elements to appName panel
+        logout.add(logoutLabel);
+        logout.add(logoutText);
+      
+        //adding panels into the main panel
+        middleTop1.add(topSpace, BorderLayout.NORTH);
+        middleTop1.add(message, BorderLayout.WEST);
+        middleTop1.add(logout, BorderLayout.EAST);
+    }
 
-        space2.add(blank);
+    private void middleMiddle(JPanel middleTop2){
 
-        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+    }
 
-        main.add(space);
-        main.add(title);
-        main.add(prompt);
-        main.add(space2);
-        main.add(middle);
-        main.add(button);
+    private void bottomMiddle(JPanel middlePanel){
 
-        //adding for display 
-        add(main);
-
-        //displaying panel
-        setVisible(true);
-        setSize(500, 500);
 
     }
  
-    /**
-     * Preforming an action for every event
-     */
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource() == photo){//if user wants to upload photos, move to photo panel
-            controller.getInstance().changeCard("Upload Photos");
-            //controller.getInstance().changeCard("Test");
-        }
-        else if(e.getSource() == roi){
-            controller.getInstance().changeCard("View ROI Table");
-        }
-        else if (e.getSource() == settings){
-            controller.getInstance().changeCard("Settings");
-        }
-        else if(e.getSource() == exit){
-
-            //deleting output.text files only if they have something in them ie were created 
-            File path = new File("pathList.txt");
-    
-            if(path.length() > 0){
-                //listManager.outputList.delete();
-                //photoPanel.fileList.setText("Empty");
-
-                //ROIManager.paths.clear();//clearing the vector 
-            }
-            System.exit(0);//ends program 
-
-        }
-
-    }
 }

@@ -24,20 +24,20 @@ public class uploadPanel extends JPanel implements ActionListener{
         //creating JButtons 
         back = new JButton("<-");//create back button 
         back.addActionListener(this);//monitor if clicked 
-        back.setForeground(colorPalette.ezBlue);
+        back.setForeground(colorPalette.light);
  
         upload = new JButton("Upload Files");
         upload.addActionListener(this);
-        upload.setForeground(colorPalette.ezBlue);
+        upload.setForeground(colorPalette.light);
 
         delete = new JButton("Delete");
         delete.addActionListener(this);
-        delete.setForeground(colorPalette.ezBlue);
+        delete.setForeground(colorPalette.light);
         delete.setEnabled(false);//ensures that files must be first uploaded
 
         clear = new JButton("Clear All");
         clear.addActionListener(this);
-        clear.setForeground(colorPalette.ezBlue);
+        clear.setForeground(colorPalette.light);
         clear.setEnabled(false);//ensures that files must be first uploaded
  
         //creating JLabels
@@ -53,7 +53,7 @@ public class uploadPanel extends JPanel implements ActionListener{
 
         listID = new JLabel("List of files uploaded");
         listID.setFont(new Font("Arial", Font.PLAIN, 15));
-        listID.setForeground(colorPalette.ezBlue);
+        listID.setForeground(colorPalette.light);
  
      
         JTable table = pathTable.getTable();
@@ -63,19 +63,19 @@ public class uploadPanel extends JPanel implements ActionListener{
         //adding elements to panels 
         title.add(name);
         title.setPreferredSize(new Dimension(850, 40));
-        title.setBackground(colorPalette.ezBlue);
+        title.setBackground(colorPalette.light);
  
         space.add(blank);
         space.setPreferredSize(new Dimension(850, 10));
-        space.setBackground(colorPalette.ezBlue);
+        space.setBackground(colorPalette.light);
  
         promptPanel.add(prompt);
         promptPanel.setPreferredSize(new Dimension(850, 30));
-        promptPanel.setBackground(colorPalette.ezBlue);
+        promptPanel.setBackground(colorPalette.light);
  
         space2.add(blank);
         space2.setPreferredSize(new Dimension(850, 10));
-        space2.setBackground(colorPalette.ezBlue);
+        space2.setBackground(colorPalette.light);
  
         listIDPanel.add(listID);
         file.add(upload);

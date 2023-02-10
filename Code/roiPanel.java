@@ -26,24 +26,24 @@ public class roiPanel extends JPanel implements ActionListener{
         //creating buttons 
         back = new JButton("<-");//creating back button 
         back.addActionListener(this);//monitor if clicked
-        back.setForeground(colorPalette.ezBlue);
+        back.setForeground(colorPalette.light);
 
         delete = new JButton("Delete Selected Items"); 
         delete.addActionListener(this);
-        delete.setForeground(colorPalette.ezBlue);
+        delete.setForeground(colorPalette.light);
         delete.setEnabled(false);
 
         highProfitSort = new JButton("Highest Profit");
         highProfitSort.addActionListener(this);
-        highProfitSort.setForeground(colorPalette.ezBlue);
+        highProfitSort.setForeground(colorPalette.light);
 
         lowProfitSort = new JButton("Lowest Profit");
         lowProfitSort.addActionListener(this);
-        lowProfitSort.setForeground(colorPalette.ezBlue);
+        lowProfitSort.setForeground(colorPalette.light);
 
         //creating JLables
         sortMess = new JLabel("Sort By: ");
-        sortMess.setForeground(colorPalette.ezBlue);
+        sortMess.setForeground(colorPalette.light);
 
         //adding element into panels
         topPanel.add(delete);
