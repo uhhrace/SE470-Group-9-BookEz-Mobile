@@ -3,14 +3,21 @@ import java.awt.event.MouseEvent;
 
 public class MouseListener extends MouseAdapter {
 
-    private String labelText;
+    private String panelChange;//panels name under controller
 
-    public MouseListener(String labelText) {
-        this.labelText = labelText;
+    /**
+     * Class obtains panels set name in controller
+     * @param panelChange panels name
+     */
+    public MouseListener(String panelChange) {
+        this.panelChange = panelChange;
     }
 
+    /**
+     * Once panel name is obtained, the controller then changes to the said panel
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
-        controller.getInstance().changeCard(labelText);
+        controller.getInstance().changeCard(panelChange);
     }
 }

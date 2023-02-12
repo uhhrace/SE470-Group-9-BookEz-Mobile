@@ -26,8 +26,9 @@ public class controller extends JPanel{
         
         cards.add(mainPanel, "Homescreen");
         cards.add(photoPanel, "Upload Photos");
-        cards.add(roiPanel, "View ROI Table");
+        cards.add(roiPanel, "ROI Table");
         cards.add(settingsPanel, "Settings");
+        //Export Files
 
         add(cards);
         setVisible(true);

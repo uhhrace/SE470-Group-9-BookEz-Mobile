@@ -2,9 +2,11 @@ import javax.swing.table.AbstractTableModel;
 
 public class pathTableWriter extends AbstractTableModel{
 
-    private final String[] columnNames = {"Number", "Path List", "CheckBox"};
+    private roiTableWriter r = roiTable.returnWriter();//creating an roi table writer variable 
 
+    private final String[] columnNames = {"Number", "Path List", "CheckBox"};
     private Object[][]data = {};
+    private boolean empty = true;
 
     @Override
     public int getColumnCount(){
@@ -52,8 +54,6 @@ public class pathTableWriter extends AbstractTableModel{
      */
     public void deleteSelectedRows(){
 
-        roiTableWriter r = roiTable.returnWriter();//creating an roi table writer variable 
-
         for(int i = getRowCount() - 1; i >= 0; i--){//itterates through all rows in table
             Object checked = getValueAt(i, finalTableValues.pathCheckCol);//obtains boolean value from check box column
             if(checked instanceof Boolean){//if checked for deletion
@@ -63,6 +63,13 @@ public class pathTableWriter extends AbstractTableModel{
                     r.deleteRow(i);//deleting the row from the roi table 
                 }
             }
+        }
+
+        //determining emptys current state 
+        if(getRowCount() == 0){
+            empty = true;
+        } else {
+            empty = false;
         }
 
         r.deleteRow(r.getRowCount() - 1);//deleting current totals row from the roi table
@@ -88,5 +95,29 @@ public class pathTableWriter extends AbstractTableModel{
         fireTableDataChanged();//update table
     }
 
-    
+    /**
+     * Returning emptys currenty state 
+     * @return true/false
+     */
+    public boolean getEmpty(){
+        return empty;
+    }
+
+    /**
+     * Setting emptys state manually 
+     * @param value true/false
+     */
+    public void setEmpty(boolean value){
+        this.empty = value;
+    }
+
+    /**
+     * Clearing data from both path table and roi table
+     */
+    public void clearData(){
+        data = new Object[0][0];
+        r.clearData();
+        empty = true;//setting empty to true
+        fireTableDataChanged();
+    }
 }

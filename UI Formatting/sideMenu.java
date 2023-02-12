@@ -14,20 +14,15 @@ public class sideMenu {
         sidePanel.setPreferredSize(new Dimension(200, 1000));
         sidePanel.setBackground(colorPalette.dark);
 
-        //Variables 
-        JPanel appName, appUnderLine, leftCushion, settings, home, upload, table, export, space, account;
-        JLabel appText, settingsLabel, settingsText, homeLabel, homeText, uploadLabel, uploadText, 
-        tableLabel, tableText, exportLabel, exportText, accountLabel, accountText;
-
         //appName panel
-        appName = new JPanel();
-        appUnderLine = new JPanel();
+        JPanel appName = new JPanel();
+        JPanel appUnderLine = new JPanel();
         appName.setPreferredSize(new Dimension(200, 50));
         appName.setBackground(colorPalette.dark);
         appUnderLine.setPreferredSize(new Dimension(120, 20));
         appUnderLine.setBackground(colorPalette.light);
         //adding elements to appName panel
-        appText = new JLabel("BookEz");
+        JLabel appText = new JLabel("BookEz");
         appText.setFont(new Font("Arial", Font.PLAIN, 32));//resizing text within label
         appText.setForeground(colorPalette.light);
         //adding elements to appName panel
@@ -35,12 +30,12 @@ public class sideMenu {
         appName.add(appUnderLine);
 
         //settings icon panel
-        settings = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel settings = new JPanel(new FlowLayout(FlowLayout.LEFT));
         settings.setPreferredSize(new Dimension(200, 80));
         settings.setBackground(colorPalette.dark);
         //adding elements to menu panel
-        settingsLabel = new JLabel(new ImageIcon("Icons/icons8-automatic-32.png"));
-        settingsText = new JLabel("Settings");
+        JLabel settingsLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-automatic-32.png"));
+        JLabel settingsText = new JLabel("Settings");
         settingsText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
         settingsText.setForeground(colorPalette.light);
         //adding mouse listeners to the jlabels 
@@ -51,12 +46,12 @@ public class sideMenu {
         settings.add(settingsText);
 
         //home icon panel
-        home = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel home = new JPanel(new FlowLayout(FlowLayout.LEFT));
         home.setPreferredSize(new Dimension(200, 100));
         home.setBackground(colorPalette.dark);
         //adding elements to menu panel
-        homeLabel = new JLabel(new ImageIcon("Icons/icons8-home-page-32.png"));
-        homeText = new JLabel("Home");
+        JLabel homeLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-home-page-32.png"));
+        JLabel homeText = new JLabel("Home");
         homeText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
         homeText.setForeground(colorPalette.light);
         //adding mouse listeners to the jlabels 
@@ -67,12 +62,12 @@ public class sideMenu {
         home.add(homeText);
 
         //upload icon panel
-        upload = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel upload = new JPanel(new FlowLayout(FlowLayout.LEFT));
         upload.setPreferredSize(new Dimension(200, 100));
         upload.setBackground(colorPalette.dark);
         //adding elements to upload panel
-        uploadLabel = new JLabel(new ImageIcon("Icons/icons8-medical-file-32.png"));
-        uploadText = new JLabel("Upload");
+        JLabel uploadLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-medical-file-32.png"));
+        JLabel uploadText = new JLabel("Upload");
         uploadText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
         uploadText.setForeground(colorPalette.light);
         //adding mouse listeners to the jlabels 
@@ -83,49 +78,49 @@ public class sideMenu {
         upload.add(uploadText);
 
         //table icon panel
-        table = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel table = new JPanel(new FlowLayout(FlowLayout.LEFT));
         table.setPreferredSize(new Dimension(200, 100));
         table.setBackground(colorPalette.dark);
         //adding elements to table panel
-        tableLabel = new JLabel(new ImageIcon("Icons/icons8-table-32.png"));
-        tableText = new JLabel("ROI Table");
+        JLabel tableLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-table-32.png"));
+        JLabel tableText = new JLabel("ROI Table");
         tableText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
         tableText.setForeground(colorPalette.light);
         //adding mouse listeners to the jlabels 
-        tableLabel.addMouseListener(new MouseListener("View ROI Table"));
-        tableText.addMouseListener(new MouseListener("View ROI Table"));
+        tableLabel.addMouseListener(new MouseListener("ROI Table"));
+        tableText.addMouseListener(new MouseListener("ROI Table"));
         //adding elements to table panel
         table.add(tableLabel);
         table.add(tableText);
 
         //export icon panel
-        export = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel export = new JPanel(new FlowLayout(FlowLayout.LEFT));
         export.setPreferredSize(new Dimension(200, 100));
         export.setBackground(colorPalette.dark);
         //adding elements to export panel
-        exportLabel = new JLabel(new ImageIcon("Icons/icons8-export-32.png"));
-        exportText = new JLabel("Export");
+        JLabel exportLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-export-32.png"));
+        JLabel exportText = new JLabel("Export");
         exportText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
         exportText.setForeground(colorPalette.light);
         //adding mouse listeners to the jlabels 
-        exportLabel.addMouseListener(new MouseListener("Export"));
-        exportText.addMouseListener(new MouseListener("Export"));
+        exportLabel.addMouseListener(new MouseListener("Export Files"));
+        exportText.addMouseListener(new MouseListener("Export Files"));
         //adding elements to export panel
         export.add(exportLabel);
         export.add(exportText);
 
         //adding a space to seperate account from the rest of the icons
-        space = new JPanel();
+        JPanel space = new JPanel();
         space.setPreferredSize(new Dimension(200, 300));
         space.setBackground(colorPalette.dark);
 
         //account icon panel
-        account = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel account = new JPanel(new FlowLayout(FlowLayout.LEFT));
         account.setPreferredSize(new Dimension(200, 100));
         account.setBackground(colorPalette.dark);
         //adding elements to account panel
-        accountLabel = new JLabel(new ImageIcon("Icons/icons8-male-user-32.png"));
-        accountText = new JLabel("Account");
+        JLabel accountLabel = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-male-user-32.png"));
+        JLabel accountText = new JLabel("Account");
         accountText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
         accountText.setForeground(colorPalette.light);
         //adding mouse listeners to the jlabels 
@@ -136,7 +131,7 @@ public class sideMenu {
         account.add(accountText);
 
         //leftCushion panel for icon spacing
-        leftCushion = new JPanel();
+        JPanel leftCushion = new JPanel();
         leftCushion.setLayout(new FlowLayout(FlowLayout.LEFT, 35, 0));
         leftCushion.setPreferredSize(new Dimension(200, 930));
         leftCushion.setBackground(colorPalette.dark);
@@ -153,6 +148,6 @@ public class sideMenu {
         sidePanel.add(appName);
         sidePanel.add(leftCushion);
 
-        return sidePanel;
+        return sidePanel;//returning the side panel menu
     }
 }

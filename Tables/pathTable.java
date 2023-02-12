@@ -12,7 +12,7 @@ public class pathTable {
     public JTable getTable(){
         JTable table = new JTable(p);//creating table with tablewriter 
 
-        table.setPreferredScrollableViewportSize(new Dimension(400, 500));//setting tables size 
+        table.setPreferredScrollableViewportSize(new Dimension(500, 310));//setting tables size 
         table.getColumnModel().getColumn(finalTableValues.pathCheckCol).setCellRenderer(new pathCheckBox());//rendering checkboxes 
 
         //adding mouse listener for each check box 
@@ -58,6 +58,21 @@ public class pathTable {
      */
     public int returnRowCount(){
         return p.getRowCount();
+    }
+
+    /**
+     * Used to ensure that the path table still contains files that were uploaded 
+     * @return true/false
+     */
+    public boolean empty(){
+        return p.getEmpty();
+    }
+
+    /**
+     * Clearing data from both path table and roi table 
+     */
+    public void clear(){
+        p.clearData();
     }
 
 }
