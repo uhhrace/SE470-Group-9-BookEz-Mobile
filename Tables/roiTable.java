@@ -12,7 +12,7 @@ public class roiTable {
     public JTable getTable(){
         JTable table = new JTable(t);//creating table with tablewriter 
 
-        table.setPreferredScrollableViewportSize(new Dimension(800, 500));//setting tables size 
+        table.setPreferredScrollableViewportSize(new Dimension(940, 450));//setting tables size 
         table.getColumnModel().getColumn(finalTableValues.roiCheckCol).setCellRenderer(new roiCheckBox());//rendering checkboxes 
 
         //adding mouse listener for each check box 

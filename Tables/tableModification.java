@@ -19,6 +19,35 @@ public class tableModification{
   }
 
   /**
+   * Resizing the column spacing on the roi table
+   */
+  public static void roiColumnResizing(JTable table){
+    //Order number column
+    table.getColumnModel().getColumn(0).setPreferredWidth(70);
+    
+    //Order total column
+    table.getColumnModel().getColumn(1).setPreferredWidth(40);
+    
+    //Item sold price column
+    table.getColumnModel().getColumn(2).setPreferredWidth(50);
+
+    //Charged shipping column
+    table.getColumnModel().getColumn(3).setPreferredWidth(70);
+    
+    //Shipping paid column
+    table.getColumnModel().getColumn(4).setPreferredWidth(60);
+    
+    //Taxes column
+    table.getColumnModel().getColumn(5).setPreferredWidth(40);
+
+    //Profit column
+    table.getColumnModel().getColumn(6).setPreferredWidth(40);
+    
+    //Checkbox column
+    table.getColumnModel().getColumn(7).setPreferredWidth(20);
+  }
+
+  /**
    * Changing the tables background color 
    * @param table
    */
