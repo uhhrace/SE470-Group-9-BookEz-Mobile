@@ -12,7 +12,7 @@ public class roiTablePanel extends JPanel{
         JTable table = roi.getTable();//obtaining the abstract table
         table.getTableHeader().setDefaultRenderer(new roiHeaderRenderer());
         tableModification.roiColumnResizing(table);
-        //tableModification.cellBackGroundColor(table);
+        tableModification.cellBackGroundColor(table);
         JScrollPane tableScroll = new JScrollPane(table);
         tableScroll.setBorder(tableModification.getTableBorder());
 

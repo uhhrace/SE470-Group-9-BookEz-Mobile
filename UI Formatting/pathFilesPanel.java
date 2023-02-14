@@ -8,7 +8,7 @@ public class pathFilesPanel extends JPanel{
         //adding elements to panel
         setBackground(colorPalette.background);
 
-        JTable table = uploadPanel.pathTable.getTable();
+        JTable table = uploadPanel.getTable().getTable();
         table.getTableHeader().setDefaultRenderer(new pathHeaderRenderer());
         tableModification.pathColumnResizing(table);
         tableModification.cellBackGroundColor(table);
@@ -53,14 +53,14 @@ public class pathFilesPanel extends JPanel{
         deleteIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                uploadPanel.pathTable.deleteRows();
+                uploadPanel.getTable().deleteRows();
                 changePanel();
             }
         });
         deleteText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                uploadPanel.pathTable.deleteRows();
+                uploadPanel.getTable().deleteRows();
                 changePanel();
             }
         });
@@ -77,14 +77,14 @@ public class pathFilesPanel extends JPanel{
         clearIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                uploadPanel.pathTable.clear();
+                uploadPanel.getTable().clear();
                 changePanel();
             }
         });
         clearText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                uploadPanel.pathTable.clear();
+                uploadPanel.getTable().clear();
                 changePanel();
             }
         });
@@ -101,10 +101,14 @@ public class pathFilesPanel extends JPanel{
         add(tableScroll);
     }
 
+    /**
+     * Ensures that after deleting or clearing that the tables are empty to change the cards for each panel
+     */
     private void changePanel(){
         //ensuring that information was sucessfully uploaded 
-        if (uploadPanel.pathTable.empty()){
-            uploadPanel.fileUIController.changeCard("No Files");
+        if (uploadPanel.getTable().empty()){
+            uploadPanel.changeToNoFiles();
+            roiPanel.changeToNoFiles();
         }
     }
 }

@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class fileUIController extends JPanel{
 
-    private static controller instance;
+    private static fileUIController instance;
 
     JPanel cards;//create panel of cards
 
@@ -34,7 +34,10 @@ public class fileUIController extends JPanel{
         c1.show(cards, card);
     }
 
-    public static controller getInstance(){
+    public fileUIController getInstance(){
+        if(instance == null){
+            instance = new fileUIController();
+        } 
         return instance;
     }
 }

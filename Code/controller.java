@@ -9,7 +9,7 @@ public class controller extends JPanel{
     JPanel cards;//create panel of cards
 
     //creating each classes panel to add to cards
-    homePanel mainPanel;
+    homePanel homePanel;
     uploadPanel photoPanel;
     roiPanel roiPanel;
     settingsPanel settingsPanel;
@@ -19,12 +19,13 @@ public class controller extends JPanel{
         setSize(500, 500);
         cards = new JPanel(new CardLayout());
 
-        mainPanel = new homePanel();
+        homePanel = new homePanel();
+        homePanel.startSlideshow();//statting home slide show when program is opened 
         photoPanel = new uploadPanel();
         roiPanel = new roiPanel();
         settingsPanel = new settingsPanel();
         
-        cards.add(mainPanel, "Homescreen");
+        cards.add(homePanel, "Homescreen");
         cards.add(photoPanel, "Upload Photos");
         cards.add(roiPanel, "ROI Table");
         cards.add(settingsPanel, "Settings");

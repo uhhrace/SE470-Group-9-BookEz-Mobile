@@ -18,6 +18,8 @@ public class MouseListener extends MouseAdapter {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
+        homePanel.slideShowHandler(panelChange);
         controller.getInstance().changeCard(panelChange);
+        
     }
 }

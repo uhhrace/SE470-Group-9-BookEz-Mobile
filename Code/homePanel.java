@@ -1,8 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class homePanel extends JPanel{
+
+    private static homeSlideShow homeSlideShow;
+    private static ArrayList<JLabel> images = new ArrayList<>();
+    private static JPanel slideShowPanel;
    
     public homePanel(){
 
@@ -45,6 +51,10 @@ public class homePanel extends JPanel{
         add(sidePanel, BorderLayout.WEST);
     }
 
+    /**
+     * Constains logout icon
+     * @param middleTop1 where content should be added
+     */
     private void topMiddle(JPanel middleTop1){
 
         middleTop1.setLayout(new BorderLayout());
@@ -77,11 +87,13 @@ public class homePanel extends JPanel{
         //adding mouse listeners to the jlabels 
         logoutLabel.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
+                homeSlideShow.stopThread();//stopping animation 
                 System.exit(0);//ends program
             }
         });
         logoutText.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
+                homeSlideShow.stopThread();//stopping animation 
                 System.exit(0);//ends program
             }
         });
@@ -95,8 +107,11 @@ public class homePanel extends JPanel{
         middleTop1.add(logout, BorderLayout.EAST);
     }
 
+    /**
+     * Creating the title of the panel
+     * @param middleTop2 where content should be added
+     */
     private void middleMiddle(JPanel middleTop2){
-
         middleTop2.setLayout(new BorderLayout());
         
         //topSpace panel
@@ -121,6 +136,10 @@ public class homePanel extends JPanel{
 
     }
 
+    /**
+     * Designing the main content of the panel
+     * @param middlePanel where content should be added
+     */
     private void bottomMiddle(JPanel middlePanel){
 
         middlePanel.setLayout(new GridLayout(2, 2, 10, 10));
@@ -129,14 +148,20 @@ public class homePanel extends JPanel{
         topLeft.setBackground(Color.RED);
         topLeft.setPreferredSize(new Dimension(350, 350));
 
-        //topRight panel 
-        JPanel topRight = new JPanel();
-        topRight.setBackground(colorPalette.background);
-        topRight.setPreferredSize(new Dimension(350, 350));
-        //adding elements to panel 
-        JLabel topRightImage = new JLabel(new ImageIcon("UI Formatting/Images/Data extraction-pana.png"));
-        //adding elements to topRight panel 
-        topRight.add(topRightImage);
+        //slideShowPanel panel (topRight)
+        slideShowPanel = new JPanel();
+        slideShowPanel.setBackground(colorPalette.background);
+        slideShowPanel.setPreferredSize(new Dimension(350, 350));
+        slideShowPanel.setLayout(new BoxLayout(slideShowPanel, BoxLayout.Y_AXIS));
+        //adding images into labels and into images arraylist  
+        JLabel image1 = new JLabel(new ImageIcon("UI Formatting/Images/Data extraction-pana.png"));
+        JLabel image2 = new JLabel(new ImageIcon("UI Formatting/Images/Data extraction-amico.png"));
+        JLabel image3 = new JLabel(new ImageIcon("UI Formatting/Images/Data extraction-bro.png"));
+        images.add(image1);
+        images.add(image2);
+        images.add(image3);
+        //creating a homeSlideShow instance
+        homeSlideShow = new homeSlideShow(images, slideShowPanel);
 
         //bottomLeft panel
         JPanel bottomLeft = new JPanel();
@@ -147,17 +172,39 @@ public class homePanel extends JPanel{
 
         //adding elements to the bottomLeft panel
         bottomLeft.add(exportText);
-        
         JPanel bottomRight = new JPanel();
         bottomRight.setBackground(Color.BLUE);
         bottomRight.setPreferredSize(new Dimension(350, 350));
 
         //adding panels into the main panel
         middlePanel.add(topLeft);
-        middlePanel.add(topRight);
+        middlePanel.add(slideShowPanel);
         middlePanel.add(bottomLeft);
         middlePanel.add(bottomRight);
 
+    }
+
+    /**
+     * Begining thread. Used to begin the slide show when the program is initially opened from controller
+     */
+    public void startSlideshow() {
+        homeSlideShow.start();
+    }
+
+    /**
+     * Used in mouseListener to determine when the thread shall stop and continue 
+     * @param panelChange panel that will be changed to 
+     */
+    public static void slideShowHandler(String panelChange){
+        if(panelChange == "Homescreen"){//if homescreen then begin slide show 
+            homeSlideShow = new homeSlideShow(images, slideShowPanel);
+            homeSlideShow.start();
+        } else {//else stop slide show 
+            if(homeSlideShow != null){
+                homeSlideShow.stopThread();
+                homeSlideShow = null;
+            }
+        }
     }
  
 }

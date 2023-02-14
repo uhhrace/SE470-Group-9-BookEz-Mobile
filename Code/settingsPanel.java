@@ -5,8 +5,6 @@ import javax.swing.border.EmptyBorder;
 
 public class settingsPanel extends JPanel{
 
-    public static fileUIController fileUIController = new fileUIController();
-
     public settingsPanel(){
 
         //side panel containing all the icons for the menu
@@ -99,7 +97,7 @@ public class settingsPanel extends JPanel{
         upload.setBackground(colorPalette.med);
         upload.setPreferredSize(new Dimension(500, 50));
         //adding elements to panel
-        JLabel uploadText = new JLabel("Return on Investment Table");
+        JLabel uploadText = new JLabel("Settings");
         uploadText.setFont(new Font("Arial", Font.PLAIN, 40));//resizing text within label
         uploadText.setForeground(colorPalette.light);
         //adding elements to upload panel
@@ -114,7 +112,7 @@ public class settingsPanel extends JPanel{
     private void bottomMiddle(JPanel middlePanel){
 
         middlePanel.setLayout(new BorderLayout());
-        fileUIController.changeCard("ROI Table");
+        //fileUIController.changeCard("No Files");
 
         //topPanel panel
         JPanel topPanel = new JPanel();
@@ -138,9 +136,9 @@ public class settingsPanel extends JPanel{
         bottomPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         bottomPanel.setBackground(colorPalette.background);
         bottomPanel.setPreferredSize(new Dimension(1000, 530));
-        fileUIController.setBackground(colorPalette.background);
+        //fileUIController.setBackground(colorPalette.background);
         //adding elements to bottomPanel panel
-        bottomPanel.add(fileUIController, BorderLayout.CENTER);
+        //bottomPanel.add(fileUIController, BorderLayout.CENTER);
 
         //adding panels into the main panel
         middlePanel.add(topPanel, BorderLayout.NORTH);

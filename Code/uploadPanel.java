@@ -5,8 +5,8 @@ import javax.swing.border.EmptyBorder;
 
 public class uploadPanel extends JPanel{
     
-    public static pathTable pathTable = new pathTable();
-    public static fileUIController fileUIController = new fileUIController();
+    private static pathTable pathTable = new pathTable();
+    private static fileUIController fileUIController = new fileUIController();
 
     public uploadPanel(){
 
@@ -49,6 +49,10 @@ public class uploadPanel extends JPanel{
         add(sidePanel, BorderLayout.WEST);
     }
 
+    /**
+     * Constains logout icon
+     * @param middleTop1 where content should be added
+     */
     private void topMiddle(JPanel middleTop1){
 
         middleTop1.setLayout(new BorderLayout());
@@ -87,6 +91,10 @@ public class uploadPanel extends JPanel{
         middleTop1.add(logout, BorderLayout.EAST);
     }
 
+    /**
+     * Creating the title of the panel
+     * @param middleTop2 where content should be added
+     */
     private void middleMiddle(JPanel middleTop2){
         middleTop2.setLayout(new BorderLayout());
         
@@ -112,9 +120,14 @@ public class uploadPanel extends JPanel{
 
     }
 
+    /**
+     * Designing the main content of the panel
+     * @param middlePanel where content should be added 
+     */
     private void bottomMiddle(JPanel middlePanel){
 
         middlePanel.setLayout(new BorderLayout());
+        fileUIController = new fileUIController();
         fileUIController.changeCard("No Files");
 
         //topPanel panel
@@ -156,10 +169,9 @@ public class uploadPanel extends JPanel{
 
                 //ensuring that information was sucessfully uploaded 
                 if(pathTable.returnRowCount() > 0){
-                    fileUIController.changeCard("Path Files");
-                } else {
-                    fileUIController.changeCard("No Files");
-                }
+                    changeToPathFiles();
+                    roiPanel.changeToROITable();
+                } 
             }
         });
 
@@ -169,7 +181,7 @@ public class uploadPanel extends JPanel{
         //bottomPanel panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BorderLayout());
-        bottomPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        bottomPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
         bottomPanel.setBackground(colorPalette.background);
         bottomPanel.setPreferredSize(new Dimension(1000, 400));
         fileUIController.setBackground(colorPalette.background);
@@ -181,4 +193,26 @@ public class uploadPanel extends JPanel{
         middlePanel.add(bottomPanel, BorderLayout.SOUTH);
     }
     
+    /**
+     * Returning pathTable to be used in other classes
+     * @return pathTable
+     */
+    public static pathTable getTable(){
+        return pathTable;
+    }
+
+    /**
+     * Calling instance of fileUIController to change the card
+     */
+    public void changeToPathFiles(){
+        fileUIController.changeCard("Path Files");
+    }
+
+    /**
+     * Calling instance of fileUIController to change the card
+     */
+    public static void changeToNoFiles(){
+        fileUIController.changeCard("No Files");
+    }
+
 }

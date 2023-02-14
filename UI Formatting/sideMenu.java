@@ -89,6 +89,7 @@ public class sideMenu {
         //adding mouse listeners to the jlabels 
         tableLabel.addMouseListener(new MouseListener("ROI Table"));
         tableText.addMouseListener(new MouseListener("ROI Table"));
+
         //adding elements to table panel
         table.add(tableLabel);
         table.add(tableText);
