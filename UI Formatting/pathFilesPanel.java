@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class pathFilesPanel extends JPanel{
+
     public pathFilesPanel(){
 
         //adding elements to panel
@@ -54,14 +55,14 @@ public class pathFilesPanel extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 uploadPanel.getTable().deleteRows();
-                changePanel();
+                checkFiles();
             }
         });
         deleteText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 uploadPanel.getTable().deleteRows();
-                changePanel();
+                checkFiles();
             }
         });
 
@@ -74,18 +75,24 @@ public class pathFilesPanel extends JPanel{
         clearText.setForeground(colorPalette.light);
         clear.add(clearIcon);
         clear.add(clearText);
+        //notification notificationInst = notification.getInstance(uploadPanel.middleTop1);
+
         clearIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 uploadPanel.getTable().clear();
-                changePanel();
+                notification.showNotificationPopup(controller.getFrame(), "Sucessfully Cleared Files");
+                uploadPanel.changeToNoFiles();
+                roiPanel.changeToNoFiles();
             }
         });
         clearText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 uploadPanel.getTable().clear();
-                changePanel();
+                notification.showNotificationPopup(controller.getFrame(), "Sucessfully Cleared Files");
+                uploadPanel.changeToNoFiles();
+                roiPanel.changeToNoFiles();
             }
         });
 
@@ -102,11 +109,12 @@ public class pathFilesPanel extends JPanel{
     }
 
     /**
-     * Ensures that after deleting or clearing that the tables are empty to change the cards for each panel
+     * Function is only used with the delete option. Checks if all files were deleted and acts accordingly to give user feedback
      */
-    private void changePanel(){
-        //ensuring that information was sucessfully uploaded 
+    private void checkFiles(){
+        //checking if all files were deleted
         if (uploadPanel.getTable().empty()){
+            notification.showNotificationPopup(controller.getFrame(), "All Files Have Been Deleted");
             uploadPanel.changeToNoFiles();
             roiPanel.changeToNoFiles();
         }

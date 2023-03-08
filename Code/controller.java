@@ -5,6 +5,7 @@ import java.awt.*;
 public class controller extends JPanel{
 
     private static controller instance;
+    private static JFrame frame;
 
     JPanel cards;//create panel of cards
 
@@ -38,7 +39,7 @@ public class controller extends JPanel{
 
     //dispalying homescreen panel to begin 
     private static void createAndDisplay(){
-        JFrame frame = new JFrame("BookEz");
+        frame = new JFrame("BookEz");
 
         instance = new controller();
 
@@ -59,5 +60,9 @@ public class controller extends JPanel{
 
     public static controller getInstance(){
         return instance;
+    }
+
+    public static JFrame getFrame(){
+        return frame;
     }
 }

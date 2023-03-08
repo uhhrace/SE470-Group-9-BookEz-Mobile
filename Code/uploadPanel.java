@@ -7,6 +7,7 @@ public class uploadPanel extends JPanel{
     
     private static pathTable pathTable = new pathTable();
     private static fileUIController fileUIController = new fileUIController();
+    public static JPanel middleTop1;
 
     public uploadPanel(){
 
@@ -15,7 +16,7 @@ public class uploadPanel extends JPanel{
         sidePanel = sideMenu.getSideMenu();
 
         //top panel, color of the background
-        JPanel middleTop1 = new JPanel();
+        middleTop1 = new JPanel();
         middleTop1.setPreferredSize(new Dimension(800, 100));
         middleTop1.setBackground(colorPalette.background);
         topMiddle(middleTop1);
@@ -215,4 +216,8 @@ public class uploadPanel extends JPanel{
         fileUIController.changeCard("No Files");
     }
 
+    /* 
+    public static void notificationMessage(String message){
+        notification.notify(middleTop1, message);
+    }*/
 }
