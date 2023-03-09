@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument; 
@@ -34,6 +36,16 @@ public class ROIManager{
             r.addTotals();//finally adding final row of column totals to the roi table 
 
         }
+    }
+
+    /**
+     * Used to read in the list of dropped files into the upload panel
+     */
+    public static void readInDroppedFiles(List<File> files){
+        for(int i = 0; i < files.size(); i++){
+            readInSingleFile(files.get(i));
+        }
+        r.addTotals();
     }
 
     /**

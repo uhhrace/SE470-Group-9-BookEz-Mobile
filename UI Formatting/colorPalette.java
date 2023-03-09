@@ -13,8 +13,8 @@ public class colorPalette {
     public static final Color dark = new Color(6,57,112);
     //Hex: #063970, RBG: (6,57,112)
 
-    public static final Color notificationColor = new Color(118, 181, 197);
-    //Hex: #76b5c5, RBG: (118, 181, 197)
+    public static final Color notificationColor = new Color(26, 116, 49);
+    //Hex: #1a7431, RBG: (26, 116, 49)
 
     public static final Color background = Color.white;//background color 
 

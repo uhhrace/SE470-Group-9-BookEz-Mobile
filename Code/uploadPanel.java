@@ -1,7 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DnDConstants;
+import java.util.List;
+import java.awt.datatransfer.DataFlavor;
 
 public class uploadPanel extends JPanel{
     
@@ -162,17 +168,28 @@ public class uploadPanel extends JPanel{
         gbc.gridy = 2;
         topCenter.add(centerText2, gbc);
 
+        //creating a DropTarget object and set it on the topPanel
+        DropTarget dropTarget = new DropTarget() {
+            public synchronized void drop(DropTargetDropEvent evt) {
+                try {
+                    evt.acceptDrop(DnDConstants.ACTION_COPY);
+                    List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+
+                    ROIManager.readInDroppedFiles(droppedFiles);
+                    uploadSucess();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        topPanel.setDropTarget(dropTarget);
+
         //adding function to panel incase user decides to upload pdf files instead of dragging and dropping 
         topCenter.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ROIManager.readInFiles();
-
-                //ensuring that information was sucessfully uploaded 
-                if(pathTable.returnRowCount() > 0){
-                    changeToPathFiles();
-                    roiPanel.changeToROITable();
-                } 
+                uploadSucess();
             }
         });
 
@@ -205,7 +222,7 @@ public class uploadPanel extends JPanel{
     /**
      * Calling instance of fileUIController to change the card
      */
-    public void changeToPathFiles(){
+    public static void changeToPathFiles(){
         fileUIController.changeCard("Path Files");
     }
 
@@ -216,8 +233,14 @@ public class uploadPanel extends JPanel{
         fileUIController.changeCard("No Files");
     }
 
-    /* 
-    public static void notificationMessage(String message){
-        notification.notify(middleTop1, message);
-    }*/
+    /**
+     * Changing the no files uploaded panel to display the paths of the files that were uploaded 
+     */
+    private static void uploadSucess(){
+        //ensuring that information was sucessfully uploaded 
+        if(pathTable.returnRowCount() > 0){
+            changeToPathFiles();
+            roiPanel.changeToROITable();
+        } 
+    }
 }

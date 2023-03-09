@@ -6,8 +6,9 @@ import javax.swing.border.EmptyBorder;
 public class roiPanel extends JPanel{
 
     private static roiTable roiTable = new roiTable();
-    private static fileUIController fileUIController = new fileUIController();
-    
+    private static fileUIController topController = new fileUIController();
+    private static fileUIController bottomController = new fileUIController();
+
     public roiPanel(){
 
         //side panel containing all the icons for the menu
@@ -127,47 +128,16 @@ public class roiPanel extends JPanel{
     private void bottomMiddle(JPanel middlePanel){
 
         middlePanel.setLayout(new BorderLayout());
-        fileUIController.changeCard("No Files");
 
         //topPanel panel
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
         topPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        topPanel.setBackground(colorPalette.background);
+        topPanel.setBackground(Color.RED);
         topPanel.setPreferredSize(new Dimension(1000, 250));
-        //adding elements to panel
-        JPanel topCenter = new JPanel();
-        topCenter.setBackground(colorPalette.background);
-        //adding elements to center panel
-
-        JPanel delete = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        delete.setBackground(colorPalette.background);
-        delete.setPreferredSize(new Dimension(250, 50));
-        JLabel deleteIcon = new JLabel(new ImageIcon("UI Formatting/Icons/icons8-clear-symbol-32.png"));
-        JLabel deleteText= new JLabel("Delete Selected Files");
-        deleteText.setFont(new Font("Arial", Font.PLAIN, 20));//resizing text within label
-        deleteText.setForeground(colorPalette.light);
-        delete.add(deleteIcon);
-        delete.add(deleteText);
-        deleteIcon.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                roiTable.deleteRows();
-                changePanel();
-            }
-        });
-        deleteText.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                roiTable.deleteRows();
-                changePanel();
-            }
-        });
-
-        topCenter.add(delete);
-
-        //adding elements to topPanel panel
-        topPanel.add(topCenter, BorderLayout.CENTER);
+        topController.setBackground(colorPalette.background);
+        topController.changeCard("No Files");
+        topPanel.add(topController, BorderLayout.CENTER);
 
         //bottomPanel panel
         JPanel bottomPanel = new JPanel();
@@ -175,9 +145,10 @@ public class roiPanel extends JPanel{
         bottomPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
         bottomPanel.setBackground(colorPalette.background);
         bottomPanel.setPreferredSize(new Dimension(1000, 530));
-        fileUIController.setBackground(colorPalette.background);
+        bottomController.setBackground(colorPalette.background);
+        bottomController.changeCard("Blank Space");
         //adding elements to bottomPanel panel
-        bottomPanel.add(fileUIController, BorderLayout.CENTER);
+        bottomPanel.add(bottomController, BorderLayout.CENTER);
 
         //adding panels into the main panel
         middlePanel.add(topPanel, BorderLayout.NORTH);
@@ -196,40 +167,14 @@ public class roiPanel extends JPanel{
      * Calling instance of fileUIController to change the card
      */
     public static void changeToROITable(){
-        fileUIController.changeCard("ROI Table");
+        bottomController.changeCard("ROI Table");
     }
 
     /**
      * Calling instance of fileUIController to change the card
      */
-    public static void changeToNoFiles(){
-        fileUIController.changeCard("No Files");
+    public static void changeToBlank(){
+        bottomController.changeCard("Blank Space");
     }
-
-    /**
-     * Ensures that after deleting or clearing that the tables are empty to change the cards for each panel
-     */
-    private void changePanel(){
-        //ensuring that information was sucessfully uploaded 
-        if (uploadPanel.getTable().empty()){
-            uploadPanel.changeToNoFiles();
-            roiPanel.changeToNoFiles();
-        }
-    }
-
-    /*
-        if(e.getSource() == highProfitSort){
-            roi.sortTable(6, true);
-        }
-        else if(e.getSource() == lowProfitSort){
-            roi.sortTable(6, false);
-        }
-        else if(e.getSource() == delete){
-            roi.deleteRows();
-        }
-        else if(e.getSource() == back){
-            controller.getInstance().changeCard("Homescreen");
-        }
-     */
 
 }

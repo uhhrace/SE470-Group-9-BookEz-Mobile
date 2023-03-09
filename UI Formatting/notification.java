@@ -13,13 +13,12 @@ public class notification{
         JLabel messageLabel = new JLabel(message);
         
         //formatting the panel and label
-        notificationPanel.setBackground(colorPalette.notificationColor);
-        notificationPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         messageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        messageLabel.setForeground(colorPalette.light);
+        messageLabel.setForeground(Color.WHITE);
 
         //adding element into the panel
         notificationPanel.add(messageLabel);
+        notificationPanel.setBackground(colorPalette.notificationColor);
     
         //creating the layeredPane
         JLayeredPane layeredPane = frame.getRootPane().getLayeredPane();

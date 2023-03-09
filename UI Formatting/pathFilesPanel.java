@@ -83,7 +83,7 @@ public class pathFilesPanel extends JPanel{
                 uploadPanel.getTable().clear();
                 notification.showNotificationPopup(controller.getFrame(), "Sucessfully Cleared Files");
                 uploadPanel.changeToNoFiles();
-                roiPanel.changeToNoFiles();
+                roiPanel.changeToBlank();
             }
         });
         clearText.addMouseListener(new MouseAdapter() {
@@ -92,7 +92,7 @@ public class pathFilesPanel extends JPanel{
                 uploadPanel.getTable().clear();
                 notification.showNotificationPopup(controller.getFrame(), "Sucessfully Cleared Files");
                 uploadPanel.changeToNoFiles();
-                roiPanel.changeToNoFiles();
+                roiPanel.changeToBlank();
             }
         });
 
@@ -100,7 +100,7 @@ public class pathFilesPanel extends JPanel{
         sideOptions.setLayout(new BoxLayout(sideOptions, BoxLayout.Y_AXIS));
         sideOptions.setBackground(colorPalette.background);
         sideOptions.add(roi);
-        sideOptions.add(export);
+        //sideOptions.add(export);
         sideOptions.add(clear);
         sideOptions.add(delete);
 
@@ -116,7 +116,7 @@ public class pathFilesPanel extends JPanel{
         if (uploadPanel.getTable().empty()){
             notification.showNotificationPopup(controller.getFrame(), "All Files Have Been Deleted");
             uploadPanel.changeToNoFiles();
-            roiPanel.changeToNoFiles();
+            roiPanel.changeToBlank();
         }
     }
 }
