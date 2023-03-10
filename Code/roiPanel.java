@@ -1,13 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 public class roiPanel extends JPanel{
 
     private static roiTable roiTable = new roiTable();
-    private static fileUIController topController = new fileUIController();
-    private static fileUIController bottomController = new fileUIController();
+    private static fileUIController fileUIController = new fileUIController();
 
     public roiPanel(){
 
@@ -128,31 +126,10 @@ public class roiPanel extends JPanel{
     private void bottomMiddle(JPanel middlePanel){
 
         middlePanel.setLayout(new BorderLayout());
+        fileUIController.changeCard("No Files");
 
-        //topPanel panel
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new BorderLayout());
-        topPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        topPanel.setBackground(Color.RED);
-        topPanel.setPreferredSize(new Dimension(1000, 250));
-        topController.setBackground(colorPalette.background);
-        topController.changeCard("No Files");
-        topPanel.add(topController, BorderLayout.CENTER);
-
-        //bottomPanel panel
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BorderLayout());
-        bottomPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
-        bottomPanel.setBackground(colorPalette.background);
-        bottomPanel.setPreferredSize(new Dimension(1000, 530));
-        bottomController.setBackground(colorPalette.background);
-        bottomController.changeCard("Blank Space");
-        //adding elements to bottomPanel panel
-        bottomPanel.add(bottomController, BorderLayout.CENTER);
-
-        //adding panels into the main panel
-        middlePanel.add(topPanel, BorderLayout.NORTH);
-        middlePanel.add(bottomPanel, BorderLayout.SOUTH);
+        //adding content into the main panel
+        middlePanel.add(fileUIController, BorderLayout.CENTER);
     }
 
     /**
@@ -167,14 +144,14 @@ public class roiPanel extends JPanel{
      * Calling instance of fileUIController to change the card
      */
     public static void changeToROITable(){
-        bottomController.changeCard("ROI Table");
+        fileUIController.changeCard("ROI Content");
     }
 
     /**
      * Calling instance of fileUIController to change the card
      */
-    public static void changeToBlank(){
-        bottomController.changeCard("Blank Space");
+    public static void changeToNoFiles(){
+        fileUIController.changeCard("No Files");
     }
 
 }

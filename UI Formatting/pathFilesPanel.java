@@ -81,18 +81,20 @@ public class pathFilesPanel extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 uploadPanel.getTable().clear();
-                notification.showNotificationPopup(controller.getFrame(), "Sucessfully Cleared Files");
+                notification.showNotificationPopup(controller.getFrame(), "Successfully Cleared Files", true);
                 uploadPanel.changeToNoFiles();
-                roiPanel.changeToBlank();
+                roiPanel.changeToNoFiles();
+                ROIManager.resetID();//resetting identifyer 
             }
         });
         clearText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 uploadPanel.getTable().clear();
-                notification.showNotificationPopup(controller.getFrame(), "Sucessfully Cleared Files");
+                notification.showNotificationPopup(controller.getFrame(), "Successfully Cleared Files", true);
                 uploadPanel.changeToNoFiles();
-                roiPanel.changeToBlank();
+                roiPanel.changeToNoFiles();
+                ROIManager.resetID();//resetting identifyer 
             }
         });
 
@@ -114,9 +116,10 @@ public class pathFilesPanel extends JPanel{
     private void checkFiles(){
         //checking if all files were deleted
         if (uploadPanel.getTable().empty()){
-            notification.showNotificationPopup(controller.getFrame(), "All Files Have Been Deleted");
+            notification.showNotificationPopup(controller.getFrame(), "All Files Have Been Deleted", true);
             uploadPanel.changeToNoFiles();
-            roiPanel.changeToBlank();
+            roiPanel.changeToNoFiles();
+            ROIManager.resetID();//resetting identifyer
         }
     }
 }

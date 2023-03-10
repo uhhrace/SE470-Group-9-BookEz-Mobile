@@ -116,7 +116,8 @@ public class pathTableWriter extends AbstractTableModel{
      */
     public void clearData(){
         data = new Object[0][0];
-        r.clearData();
+        r.clearData();//clearing roi table as well
+        ROIManager.resetID();//resetting identifyer
         empty = true;//setting empty to true
         fireTableDataChanged();
     }

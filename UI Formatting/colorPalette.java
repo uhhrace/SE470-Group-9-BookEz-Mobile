@@ -16,6 +16,9 @@ public class colorPalette {
     public static final Color notificationColor = new Color(26, 116, 49);
     //Hex: #1a7431, RBG: (26, 116, 49)
 
+    public static final Color negativeNotificationColor = new Color(220, 0, 0);
+    //Hex: #DC0000, RGB: (220, 0, 0)
+
     public static final Color background = Color.white;//background color 
 
 }

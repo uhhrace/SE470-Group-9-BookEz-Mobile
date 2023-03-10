@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DnDConstants;
+import java.util.Collections;
 import java.util.List;
 import java.awt.datatransfer.DataFlavor;
 
@@ -134,8 +135,6 @@ public class uploadPanel extends JPanel{
     private void bottomMiddle(JPanel middlePanel){
 
         middlePanel.setLayout(new BorderLayout());
-        fileUIController = new fileUIController();
-        fileUIController.changeCard("No Files");
 
         //topPanel panel
         JPanel topPanel = new JPanel();
@@ -174,8 +173,18 @@ public class uploadPanel extends JPanel{
                 try {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-
-                    ROIManager.readInDroppedFiles(droppedFiles);
+        
+                    for (File file : droppedFiles) {
+                        String fileName = file.getName();
+                        int dotIndex = fileName.lastIndexOf(".");
+                        String extension = fileName.substring(dotIndex + 1);
+        
+                        if (extension.equalsIgnoreCase("pdf")) {
+                            ROIManager.readInDroppedFiles(Collections.singletonList(file));
+                        } else {
+                            notification.showNotificationPopup(controller.getFrame(), "Incorrect File Format", false);
+                        }
+                    }
                     uploadSucess();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -201,8 +210,9 @@ public class uploadPanel extends JPanel{
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
         bottomPanel.setBackground(colorPalette.background);
-        bottomPanel.setPreferredSize(new Dimension(1000, 400));
+        bottomPanel.setPreferredSize(new Dimension(1000, 600));
         fileUIController.setBackground(colorPalette.background);
+        fileUIController.changeCard("No Files");
         //adding elements to bottomPanel panel
         bottomPanel.add(fileUIController, BorderLayout.CENTER);
 

@@ -9,7 +9,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 
 public class ROIManager{
 
-    public static Integer identifyer = 1;//for vectors id number 
+    private static Integer identifyer = 1;//for files id number 
     private static Integer nextEnd;//used to find desired strings 
     private static roiTableWriter r = roiTable.returnWriter();//creating an instance of roi table writer
 
@@ -18,6 +18,7 @@ public class ROIManager{
      */
     public static void readInFiles(){
 
+        boolean valid = true;//used for error handling of invalid file types
         JFileChooser fileUpload = new JFileChooser();//creating file chooser//testing 
         fileUpload = new JFileChooser();//creating file chooser
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Documents", "pdf");
@@ -29,12 +30,17 @@ public class ROIManager{
         if(response == JFileChooser.APPROVE_OPTION){//make sure file selecteds path is retrieved
             File files[] = fileUpload.getSelectedFiles();//array of files that contains selected files  
 
-            for(File file : files){//itterate through collected files 
-                readInSingleFile(file);//read in each file 
+            for(int i = 0; valid && i < files.length; i++){
+                valid = readInSingleFile(files[i]);//read in each file 
 
+                    if(!valid){//exit loop once a false is found
+                        break;
+                    }
             }
-            r.addTotals();//finally adding final row of column totals to the roi table 
 
+            if(valid){
+                r.addTotals();//finally adding final row of column totals to the roi table 
+            }
         }
     }
 
@@ -42,38 +48,59 @@ public class ROIManager{
      * Used to read in the list of dropped files into the upload panel
      */
     public static void readInDroppedFiles(List<File> files){
-        for(int i = 0; i < files.size(); i++){
-            readInSingleFile(files.get(i));
+        boolean valid = true;//used for error handling of invalid file types
+
+        for(int i = 0; valid && i < files.size(); i++){
+            valid = readInSingleFile(files.get(i));//read in each file 
+
+                if(!valid){//exit loop once a false is found
+                    break;
+                }
         }
-        r.addTotals();
+
+        if(valid){
+            r.addTotals();//finally adding final row of column totals to the roi table 
+        }
     }
 
     /**
      * Reads in a single file. Convers and strips the order pdf into a string, then collects all of the orders information. 
-     * Adding in the information into the roi table as it is collected 
+     * Adding in the information into the roi table as it is collected. Returns true or false if the file type is valid
      * 
      * @param file Order reciept pdf to be processed 
      */
-    private static void readInSingleFile(File file){
+    private static boolean readInSingleFile(File file){
         try{
             String path = file.getAbsolutePath() + "\n";//collect path 
-            int pathSegment = path.indexOf("Sales");//finds "Sales" segment of each order path
-            path = path.substring(pathSegment);//collects order path from "Sales" on
+            //int pathSegment = path.indexOf("Sales");//finds "Sales" segment of each order path
+            //path = path.substring(pathSegment);//collects order path from "Sales" on
 
-            pathTable.returnWriter().addRow(new pathObject(identifyer, path));//adding the row into the path table
             FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
             PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
             PDFTextStripper pdfTextStripper = new PDFTextStripper();//obtain text
             String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
 
-            orderCollector(docText);//getting info from each pdf and adding to output.text file
+            //checks to ensure the order number can be found, else it is assumed the file is not valid
+            int valid = docText.indexOf("Order number");
 
-            pdfDocument.close();//closing document
-            fis.close();//closing file input stream
-            identifyer++;
+            if(valid == -1){
+                notification.showNotificationPopup(controller.getFrame(), "Incorrect File Format", false);
+                pdfDocument.close();//closing document
+                fis.close();//closing file input stream
+                return false;//file is invalid
+            } else {
+                pathTable.returnWriter().addRow(new pathObject(identifyer, path));//adding the row into the path table
+                orderCollector(docText);//getting info from each pdf and adding to output.text file
+                pdfDocument.close();//closing document
+                fis.close();//closing file input stream
+                identifyer++;
+                return true;//file is valid
+            }
+
         } catch(java.io.IOException ex){//catching exception thrown for invalid document inputs
             System.out.println("File cannot be opened: " + ex);//printing error message 
-        } 
+        }
+        return false;//default to invalid file
     }
 
     /**
@@ -106,14 +133,14 @@ public class ROIManager{
 
         }
 
-         //if sales taxes were not collected, set tax to 0
-         if(doc.indexOf("Sales tax (eBay collected)") == -1){
+        //if sales taxes were not collected, set tax to 0
+        if(doc.indexOf("Sales tax (eBay collected)") == -1){
             tax = 0.00;
 
         } else {
             tax = Double.parseDouble(convertAndFind(doc, "$",nextEnd, 1));
         }
-        
+            
         //calculating profit after costs and if sales tax was collected 
         profitC = profitCalc(total, shipCost, tax);      
 
@@ -157,5 +184,12 @@ public class ROIManager{
         profit = (double) Math.round(profit * 1000) / 1000.0;//rounding off two decimal places
         return profit;//returning profit obtained 
 
+    }
+
+    /**
+     * Resetting ID when tables have no more rows of data
+     */
+    public static void resetID(){
+        identifyer = 1;
     }
 }

@@ -11,7 +11,7 @@ public class fileUIController extends JPanel{
     noFilesPanel noFilesPanel;
     pathFilesPanel pathFilesPanel;
     roiTablePanel roiTablePanel;
-    blankPanel blankPanel;
+    roiPanelContent roiPanelContent;
 
     public fileUIController(){
         cards = new JPanel(new CardLayout());
@@ -19,12 +19,12 @@ public class fileUIController extends JPanel{
         noFilesPanel = new noFilesPanel();
         pathFilesPanel = new pathFilesPanel();
         roiTablePanel = new roiTablePanel();
-        blankPanel = new blankPanel();
+        roiPanelContent = new roiPanelContent();
         
         cards.add(noFilesPanel, "No Files");
         cards.add(pathFilesPanel, "Path Files");
         cards.add(roiTablePanel, "ROI Table");
-        cards.add(blankPanel, "Blank Space");
+        cards.add(roiPanelContent, "ROI Content");
        
         add(cards);
         setVisible(true);
