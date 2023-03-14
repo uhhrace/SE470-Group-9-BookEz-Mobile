@@ -3,6 +3,7 @@ package Tables;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
@@ -14,6 +15,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
 public class pdfExporter{
@@ -25,7 +27,7 @@ public class pdfExporter{
         fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
 
         int userSelection = fileChooser.showSaveDialog(null);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        if(userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
 
             String DEST = fileToSave.getAbsolutePath();
@@ -36,14 +38,32 @@ public class pdfExporter{
             PdfWriter writer = new PdfWriter(new FileOutputStream(DEST));
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document doc = new Document(pdfDoc);
-            Table pdfTable = new Table(UnitValue.createPercentArray(table.getColumnCount())).useAllAvailableWidth();
 
+            //adding a structure format to the document
+            doc.add(new Paragraph("BookEz").setTextAlignment(TextAlignment.CENTER).setFontSize(20));
+            doc.add(new Paragraph("Bookkeeping made easy").setTextAlignment(TextAlignment.CENTER).setFontSize(15));
+            doc.add(new Paragraph("ROI Table From: " + LocalDate.now().toString()).setTextAlignment(TextAlignment.LEFT).setFontSize(12));
+            
+            //creating a table for the pdf (modified column length to exclude the checkbox)
+            Table pdfTable = new Table(UnitValue.createPercentArray(table.getColumnCount() - 1)).useAllAvailableWidth();
+
+            //adding headers
+            for (int j = 0; j < table.getColumnCount() - 1; j++) {
+                Cell headerCell = new Cell();
+                Paragraph headerParagraph = new Paragraph(table.getColumnName(j));
+                headerCell.add(headerParagraph);
+                pdfTable.addHeaderCell(headerCell);
+            }
+    
+            //adding data rows
             for (int i = 0; i < table.getRowCount(); i++) {
-                for (int j = 0; j < table.getColumnCount(); j++) {
+                for (int j = 0; j < table.getColumnCount() - 1; j++) {
+
                     Cell cell = new Cell();
                     Paragraph paragraph = new Paragraph(String.valueOf(table.getValueAt(i, j)));
                     cell.add(paragraph);
                     pdfTable.addCell(cell);
+
                 }
             }
 
