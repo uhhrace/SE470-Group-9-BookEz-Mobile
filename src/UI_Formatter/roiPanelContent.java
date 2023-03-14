@@ -12,6 +12,7 @@ import contentPanels.roiPanel;
 import contentPanels.uploadPanel;
 import Managers.ROIManager;
 import Controller.controller;
+import Tables.pdfExporter;
 
 public class roiPanelContent extends JPanel{
 
@@ -63,8 +64,26 @@ public class roiPanelContent extends JPanel{
         export.add(exportIcon);
         export.add(exportText);
         //adding mouse listeners to the jlabels 
-        exportIcon.addMouseListener(new MouseListener("Export Files"));
-        exportText.addMouseListener(new MouseListener("Export Files"));
+        exportIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    pdfExporter.createPDF(roi.getTable());
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        exportText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    pdfExporter.createPDF(roi.getTable());
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 
         JPanel delete = new JPanel(new FlowLayout(FlowLayout.LEFT));
         delete.setBackground(colorPalette.background);

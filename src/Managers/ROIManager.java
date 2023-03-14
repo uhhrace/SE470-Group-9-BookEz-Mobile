@@ -2,6 +2,7 @@ package Managers;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -78,38 +79,34 @@ public class ROIManager{
      * 
      * @param file Order reciept pdf to be processed 
      */
-    private static boolean readInSingleFile(File file){
-        try{
-            String path = file.getAbsolutePath() + "\n";//collect path 
-            //int pathSegment = path.indexOf("Sales");//finds "Sales" segment of each order path
-            //path = path.substring(pathSegment);//collects order path from "Sales" on
-
-            FileInputStream fis = new FileInputStream(file.getAbsolutePath());//create new input stream
-            PDDocument pdfDocument = PDDocument.load(fis);//load in pdf document 
-            PDFTextStripper pdfTextStripper = new PDFTextStripper();//obtain text
-            String docText = pdfTextStripper.getText(pdfDocument);//turning text into string 
-
-            //checks to ensure the order number can be found, else it is assumed the file is not valid
+    private static boolean readInSingleFile(File file) {
+        try {
+            String path = file.getAbsolutePath() + "\n"; // collect path
+            FileInputStream fis = new FileInputStream(file); // create new input stream
+            PDDocument pdfDocument = PDDocument.load(fis); // load in pdf document
+            PDFTextStripper pdfTextStripper = new PDFTextStripper(); // obtain text
+            String docText = pdfTextStripper.getText(pdfDocument); // turning text into string
+    
+            // checks to ensure the order number can be found, else it is assumed the file is not valid
             int valid = docText.indexOf("Order number");
-
-            if(valid == -1){
+    
+            if (valid == -1) {
                 notification.showNotificationPopup(controller.getFrame(), "Incorrect File Format", false);
-                pdfDocument.close();//closing document
-                fis.close();//closing file input stream
-                return false;//file is invalid
+                pdfDocument.close(); // close the pdf document
+                return false; // file is invalid
             } else {
-                pathTable.returnWriter().addRow(new pathObject(identifyer, path));//adding the row into the path table
-                orderCollector(docText);//getting info from each pdf and adding to output.text file
-                pdfDocument.close();//closing document
-                fis.close();//closing file input stream
+                pathTable.returnWriter().addRow(new pathObject(identifyer, path)); // adding the row into the path table
+                orderCollector(docText); // getting info from each pdf and adding to output.text file
                 identifyer++;
-                return true;//file is valid
+                pdfDocument.close(); // close the pdf document
+                return true; // file is valid
             }
-
-        } catch(java.io.IOException ex){//catching exception thrown for invalid document inputs
-            System.out.println("File cannot be opened: " + ex);//printing error message 
+    
+        } catch (IOException ex) { // catching exception thrown for invalid document inputs
+            System.out.println("File cannot be opened: " + ex); // printing error message
         }
-        return false;//default to invalid file
+        
+        return false; // default to invalid file
     }
 
     /**
