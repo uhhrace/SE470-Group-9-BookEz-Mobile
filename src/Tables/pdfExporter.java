@@ -19,7 +19,19 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
 public class pdfExporter{
-    
+
+    public static File prototypePDF(String DEST) throws Exception{
+        PdfWriter writer = new PdfWriter(new FileOutputStream(DEST));
+        PdfDocument pdfDoc = new PdfDocument(writer);
+        Document doc = new Document(pdfDoc);
+
+        //adding a structure format to the document
+        doc.add(new Paragraph("BookEz").setTextAlignment(TextAlignment.CENTER).setFontSize(20));
+        doc.add(new Paragraph("Bookkeeping made easy").setTextAlignment(TextAlignment.CENTER).setFontSize(15));
+
+        return doc;
+    }
+
     public static void createPDF(JTable table) throws Exception {
         //creating a file chooser dialog to let the user select the destination file
         JFileChooser fileChooser = new JFileChooser();
@@ -37,11 +49,7 @@ public class pdfExporter{
 
             PdfWriter writer = new PdfWriter(new FileOutputStream(DEST));
             PdfDocument pdfDoc = new PdfDocument(writer);
-            Document doc = new Document(pdfDoc);
-
-            //adding a structure format to the document
-            doc.add(new Paragraph("BookEz").setTextAlignment(TextAlignment.CENTER).setFontSize(20));
-            doc.add(new Paragraph("Bookkeeping made easy").setTextAlignment(TextAlignment.CENTER).setFontSize(15));
+            Document doc = prototypePDF();
             doc.add(new Paragraph("ROI Table From: " + LocalDate.now().toString()).setTextAlignment(TextAlignment.LEFT).setFontSize(12));
             
             //creating a table for the pdf (modified column length to exclude the checkbox)
